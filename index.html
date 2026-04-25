@@ -45,393 +45,433 @@
       --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    
+    /* منع التأرجح الجانبي بصرامة */
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden !important; 
+      position: relative;
+    }
+
     body {
       background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
       background-attachment: fixed;
       margin: 0; padding: 0; font-family: 'Tajawal', sans-serif;
-      overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
       min-height: 100vh; display: flex; flex-direction: column; align-items: center;
     }
+    
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 100px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
     .control-panel {
       position: relative; z-index: 50;
-      background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      width: calc(100% - 24px); /* ضمان عدم تجاوز الشاشة في الجوال */
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: var(--shadow-xl); transition: all var(--transition);
     }
-    .control-panel:hover { box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18); }
     .input-field {
-      width: 100%; border: 2px solid var(--border); border-radius: 0.75rem;
-      padding: 0.65rem 0.9rem; font-size: 0.9rem; font-family: 'Tajawal', sans-serif;
+      width: 100%; border: 2px solid var(--border); border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem; font-size: 0.9rem; font-family: 'Tajawal', sans-serif;
       outline: none; transition: all var(--transition); background: white; color: var(--text);
     }
     .input-field:hover { border-color: #cbd5e1; }
-    .input-field:focus { border-color: var(--secondary); box-shadow: 0 0 0 4px rgba(24, 168, 131, 0.08); transform: translateY(-1px); }
-    .input-label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-light); margin-bottom: 0.375rem; font-family: 'Cairo', sans-serif; letter-spacing: 0.02em; }
+    .input-field:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(24, 168, 131, 0.1); }
+    .input-label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-light); margin-bottom: 0.25rem; font-family: 'Cairo', sans-serif; }
     .btn {
       position: relative; overflow: hidden; font-family: 'Cairo', sans-serif; font-weight: 700;
-      border: none; cursor: pointer; transition: all var(--transition); border-radius: 0.75rem;
-      padding: 0.65rem 1.3rem; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; white-space: nowrap;
+      border: none; cursor: pointer; transition: all var(--transition); border-radius: 0.5rem;
+      padding: 0.6rem 1rem; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; white-space: nowrap;
     }
-    .btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%); transform: translateX(-100%); transition: transform 0.6s ease; }
-    .btn:hover::after { transform: translateX(100%); }
-    .btn:active { transform: scale(0.97); }
-    .btn-primary { background: linear-gradient(135deg, #18a883, #0d9668); color: white; box-shadow: 0 4px 15px rgba(24, 168, 131, 0.3); }
-    .btn-dark { background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; box-shadow: 0 4px 15px rgba(26, 54, 93, 0.3); }
-    .btn-outline { background: white; border: 2px solid var(--border); color: #475569; }
+    .btn-primary { background: linear-gradient(135deg, #18a883, #0d9668); color: white; box-shadow: 0 4px 10px rgba(24, 168, 131, 0.2); }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-dark { background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; box-shadow: 0 4px 10px rgba(26, 54, 93, 0.2); }
+    .btn-dark:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-outline { background: white; border: 1.5px solid var(--border); color: #475569; }
     .btn-outline:hover { border-color: #94a3b8; background: #f8fafc; }
-    .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
-    .card { background: white; border-radius: 1rem; border: 1px solid var(--border); padding: 1.25rem; transition: all var(--transition); box-shadow: var(--shadow-sm); }
-    .card:hover { box-shadow: var(--shadow-md); }
-    .card-header { font-family: 'Cairo', sans-serif; font-weight: 700; color: var(--primary); margin-bottom: 1rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
-    .preview-wrapper { width: 100%; display: flex; justify-content: center; transform-origin: top center; margin-top: 24px; margin-bottom: 48px; position: relative; z-index: 10; }
+    .btn-sm { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+    .card { background: white; border-radius: 0.75rem; border: 1px solid var(--border); padding: 1rem; box-shadow: var(--shadow-sm); }
+    .card-header { font-family: 'Cairo', sans-serif; font-weight: 700; color: var(--primary); margin-bottom: 0.75rem; font-size: 0.95rem; }
     
-    /* --- Report A4 Container --- */
+    /* حل مشكلة التأرجح لمعاينة الورقة */
+    .preview-wrapper { 
+      width: 100%; 
+      max-width: 100vw;
+      overflow-x: auto; /* السماح بالتمرير داخل هذا الصندوق فقط */
+      -webkit-overflow-scrolling: touch;
+      display: flex; 
+      justify-content: center; 
+      margin-top: 24px; 
+      margin-bottom: 48px; 
+      position: relative; 
+      z-index: 10; 
+      padding: 0 10px; /* مساحة صغيرة من الحواف */
+    }
+    
+    /* --- A4 Page Container (Strict Limits) --- */
     @page { size: A4 portrait; margin: 0; }
     .a4-page {
-      width: 210mm; height: 297mm; background: white;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden;
-      display: flex; flex-direction: column; flex-shrink: 0; border-radius: 4px;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+      width: 210mm;
+      height: 297mm;
+      max-height: 297mm;
+      background: white;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden; /* يمنع أي خروج للمحتوى */
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
       padding: 0; margin: 0;
+      box-sizing: border-box;
     }
     
     .report-header {
-      position: relative; height: 44mm; width: 100%; flex-shrink: 0;
+      position: relative; height: 38mm; width: 100%; flex-shrink: 0;
       background: linear-gradient(135deg, #1a365d 0%, #0f2440 40%, #18a883 100%);
-      border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; z-index: 10; overflow: hidden;
+      border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; color: white; overflow: hidden;
     }
-    .report-header::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 25% 60%, rgba(255, 255, 255, 0.06) 1px, transparent 1px), radial-gradient(circle at 75% 40%, rgba(255, 255, 255, 0.06) 1px, transparent 1px); background-size: 20px 20px, 20px 20px; opacity: 0.3; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
-    .header-content { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 15mm; z-index: 1; }
-    .header-right { text-align: right; width: 35%; }
+    .header-content { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 15mm; }
+    .header-right, .header-left { width: 35%; }
+    .header-left { text-align: left; }
+    .header-left-inner { direction: rtl; text-align: right; display: inline-block; }
     .header-center { width: 30%; display: flex; justify-content: center; }
-    .header-left { text-align: right; width: 35%; padding-left: 4mm; }
-    .header-left-inner { direction: rtl; }
     
     .title-badge-wrapper { position: relative; margin-top: -6mm; z-index: 20; text-align: center; padding: 0 15mm; flex-shrink: 0; }
-    .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 8px 40px; border-radius: 9999px; font-family: 'Cairo', sans-serif; font-size: 14pt; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; border: 3px solid white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+    .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 6px 35px; border-radius: 999px; font-family: 'Cairo', sans-serif; font-size: 13pt; font-weight: 900; border: 3px solid white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); max-width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     
-    .info-bar-wrapper { padding: 0 15mm; margin-top: 4mm; flex-shrink: 0; }
-    .info-bar {
-      display: grid; grid-template-columns: repeat(4, 1fr); background: white;
-      border-top: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; padding: 6px 0;
-    }
-    .info-item { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #d1d5db; padding: 2px 6px; }
+    .info-bar-wrapper { padding: 0 15mm; margin-top: 3mm; flex-shrink: 0; }
+    .info-bar { display: grid; grid-template-columns: repeat(4, 1fr); background: white; border-top: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; padding: 5px 0; }
+    .info-item { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #d1d5db; padding: 0 4px; }
     .info-item:last-child { border-left: none; }
-    .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 9pt; }
-    .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 9.5pt; text-align: center; line-height: 1.2; word-break: break-word; }
+    .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 8.5pt; }
+    .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 9pt; text-align: center; line-height: 1.2; }
     
-    /* --- Core Content Area - Strictly No Scrolling --- */
+    /* --- Main Content Area (Flex to fill, strict overflow) --- */
     .main-content-area {
-      padding: 4mm 15mm; flex: 1; display: flex; flex-direction: column;
-      overflow: hidden; /* STRICTLY NO SCROLLING */
+      flex: 1 1 auto; /* يأخذ المساحة المتبقية فقط */
+      padding: 4mm 15mm;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* لا أشرطة تمرير */
+      min-height: 0; /* ضروري لعمل الـ Flexbox بشكل صحيح */
     }
-    #template-teacher { display: flex; gap: 12px; height: 100%; width: 100%; overflow: hidden; }
     
-    /* Adjusted ratios: more space for text, less for evidence */
-    .teacher-text-col { width: 58%; padding-left: 5px; display: flex; flex-direction: column; overflow: hidden; }
-    .teacher-evidence-col { width: 42%; display: flex; flex-direction: column; overflow: hidden; }
+    #template-teacher { display: flex; gap: 10px; height: 100%; width: 100%; overflow: hidden; }
     
-    /* --- Content Elements Formatting --- */
-    .content-card { background: white; border: 1.5px solid #eab308; border-radius: 10px; padding: 6px 10px; margin-bottom: 6px; box-shadow: var(--shadow-sm); }
-    .section-heading { font-family: 'Cairo', sans-serif; font-size: 11pt; font-weight: 900; color: var(--primary); border-bottom: 2px solid #eab308; display: inline-block; padding-bottom: 2px; margin-bottom: 4px; }
+    .teacher-text-col { width: 62%; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+    .teacher-evidence-col { width: 38%; display: flex; flex-direction: column; overflow: hidden; }
     
-    /* Intro Formatting */
-    .intro-section { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1.5px solid var(--secondary); display: flex; flex-direction: column; gap: 3px; }
-    .intro-heading { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 11pt; }
-    .intro-text { color: #1e293b; font-weight: 500; font-size: 9.5pt; line-height: 1.5; text-align: justify; }
+    /* --- Content Components --- */
+    .content-card { background: white; border: 1.5px solid #eab308; border-radius: 8px; padding: 6px 8px; box-shadow: var(--shadow-sm); }
+    .section-heading { font-family: 'Cairo', sans-serif; font-size: 10.5pt; font-weight: 900; color: var(--primary); border-bottom: 2px solid #eab308; display: inline-block; padding-bottom: 1px; margin-bottom: 3px; }
     
-    /* Bullets (Objectives/Impact) */
+    .intro-section { margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1.5px dashed var(--secondary); }
+    .intro-heading { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 10.5pt; display: block; margin-bottom: 2px; }
+    .intro-text { color: #1e293b; font-weight: 500; font-size: 9pt; line-height: 1.4; text-align: justify; }
+    
     .bullet-list { list-style: none; padding: 0; margin: 2px 0; }
-    .bullet-item { position: relative; padding-right: 14px; margin-bottom: 3px; font-size: 9.5pt; color: #1e293b; line-height: 1.4; text-align: justify; font-weight: 500; }
-    .bullet-item::before { content: ''; position: absolute; right: 0; top: 6px; width: 5px; height: 5px; background: var(--secondary); border-radius: 50%; }
+    .bullet-item { position: relative; padding-right: 12px; margin-bottom: 2px; font-size: 9pt; color: #1e293b; line-height: 1.3; font-weight: 500; }
+    .bullet-item::before { content: ''; position: absolute; right: 0; top: 6px; width: 4px; height: 4px; background: var(--secondary); border-radius: 50%; }
     
-    /* Table (Implementation) */
-    .report-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin-top: 4px; border-radius: 6px; overflow: hidden; }
-    .report-table th { color: white; padding: 4px 6px; border: 1px solid #0d9668; text-align: center; font-weight: 700; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #18a883, #0d9668); }
-    .report-table td { padding: 4px 6px; border: 1px solid #e2e8f0; color: #1e293b; text-align: center; font-weight: 500; }
+    .report-table { width: 100%; border-collapse: collapse; font-size: 8pt; border-radius: 4px; overflow: hidden; }
+    .report-table th { color: white; padding: 3px; border: 1px solid #0d9668; text-align: center; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #18a883, #0d9668); }
+    .report-table td { padding: 3px; border: 1px solid #e2e8f0; color: #1e293b; text-align: center; font-weight: 500; }
     .report-table tbody tr:nth-child(even) td { background: #f8fafc; }
     
-    /* Chart Container */
-    .chart-container { height: 110px; width: 100%; position: relative; margin-top: 4px; }
+    .chart-container { height: 90px; width: 100%; position: relative; margin-top: 2px; }
 
-    /* Evidence Formatting */
-    .evidence-header-bar { color: white; font-family: 'Cairo', sans-serif; font-size: 11pt; font-weight: 700; text-align: center; padding: 4px; border-top-left-radius: 10px; border-top-right-radius: 10px; border: 1.5px solid; background: linear-gradient(135deg, #18a883, #0d9668); border-color: #18a883; }
-    .evidence-container { flex: 1; border: 1.5px solid #18a883; border-top: none; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
-    .photo-slot { flex: 1; width: 100%; border-radius: 8px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; border: 2px dashed #e2e8f0; transition: all var(--transition); }
+    /* Evidence Styling */
+    .evidence-header-bar { color: white; font-family: 'Cairo', sans-serif; font-size: 10pt; font-weight: 700; text-align: center; padding: 3px; border-top-left-radius: 8px; border-top-right-radius: 8px; background: linear-gradient(135deg, #18a883, #0d9668); flex-shrink: 0; }
+    .evidence-container { flex: 1; border: 1.5px solid #18a883; border-top: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; padding: 6px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+    .photo-slot { flex: 1; width: 100%; border-radius: 6px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; border: 1.5px dashed #cbd5e1; min-height: 0; /* يسمح بالتصغير */ }
     .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
     
-    /* Footer with Bottom Margin padding to prevent page break overflow */
-    .report-footer { height: 22mm; padding: 0 15mm; display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #e5e7eb; background: linear-gradient(to bottom, #ffffff, #f8fafc); flex-shrink: 0; margin-bottom: 5mm; }
+    /* --- Footer (Strict margins to prevent page break) --- */
+    .report-footer {
+      height: 20mm;
+      padding: 0 15mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1.5px solid #e5e7eb;
+      background: linear-gradient(to bottom, #ffffff, #f8fafc);
+      flex-shrink: 0; /* يمنع انضغاط التذييل */
+      margin-bottom: 3mm; /* هامش أمان سفلي مهم جداً للطباعة */
+    }
     
-    .tools-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; font-size: 7.5pt; }
-    .tools-list span { background: #e6f7f1; color: #0d6b4f; border-radius: 10px; padding: 1px 6px; }
+    /* تعديل عرض الأدوات بحيث تستوعب عدداً كبيراً دون تخريب التخطيط */
+    .tools-list { display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 2px; height: 100%; overflow: hidden; }
+    .tools-list span { background: #e6f7f1; color: #0d6b4f; border-radius: 4px; padding: 1px 4px; font-size: 7.5pt; display: inline-block; white-space: nowrap; }
     
     /* Camera & Modal stuff */
-    #camera-app { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; flex-direction: column; font-family: 'Tajawal', sans-serif; }
-    .cam-header { position: absolute; top: 0; left: 0; right: 0; height: 90px; background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent); display: flex; justify-content: space-between; align-items: flex-start; padding: 20px 24px; z-index: 40; }
-    .cam-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.35); color: white; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); }
-    .cam-btn.danger { color: #fca5a5; border-color: rgba(252,165,165,0.5); }
+    #camera-app { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; flex-direction: column; }
+    .cam-header { position: absolute; top: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 20px; z-index: 40; }
+    .cam-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .cam-viewfinder { flex-grow: 1; position: relative; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; }
-    #cam-video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s; }
-    .cam-controls { background: #000; padding-bottom: max(20px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; z-index: 40; }
-    .zoom-controls { display: flex; justify-content: center; gap: 16px; padding: 12px 0; background: linear-gradient(to top, #000, transparent); margin-top: -40px; z-index: 41; }
-    .zoom-btn { background: rgba(255,255,255,0.12); color: white; border: 2px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 5px 16px; font-weight: 700; font-size: 13px; cursor: pointer; backdrop-filter: blur(8px); }
-    .zoom-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
-    .shutter-row { display: flex; justify-content: space-around; align-items: center; padding: 16px 24px; }
-    .shutter-btn { width: 72px; height: 72px; border-radius: 50%; border: 4px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    .shutter-inner { width: 54px; height: 54px; background: white; border-radius: 50%; }
-    .gallery-thumb { width: 52px; height: 52px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.4); overflow: hidden; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
-    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    #cam-video { width: 100%; height: 100%; object-fit: cover; }
+    .cam-controls { background: #000; padding-bottom: 20px; display: flex; flex-direction: column; z-index: 40; }
+    .shutter-row { display: flex; justify-content: space-around; align-items: center; padding: 10px; }
+    .shutter-btn { width: 64px; height: 64px; border-radius: 50%; border: 4px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .shutter-inner { width: 48px; height: 48px; background: white; border-radius: 50%; }
     #review-screen { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 10001; flex-direction: column; }
-    .review-image-area { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 40px 28px; }
-    #review-img { max-width: 100%; max-height: 100%; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
-    .review-actions { height: 110px; display: flex; justify-content: center; gap: 30px; align-items: center; background: #111; padding: 0 28px; }
-    .review-action-btn { font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 16px; border: none; cursor: pointer; padding: 14px 36px; border-radius: 28px; color: white; background: #444; }
+    .review-image-area { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    #review-img { max-width: 100%; max-height: 100%; border-radius: 12px; }
+    .review-actions { height: 90px; display: flex; justify-content: center; gap: 20px; align-items: center; background: #111; }
+    .review-action-btn { font-family: 'Tajawal', sans-serif; font-weight: 700; border: none; cursor: pointer; padding: 10px 30px; border-radius: 20px; color: white; background: #444; }
     .review-action-btn.accept { background: linear-gradient(135deg, #18a883, #0d9668); }
-    .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-    .loading-box { background: white; border-radius: 1.25rem; padding: 2rem; text-align: center; box-shadow: 0 24px 48px rgba(0,0,0,0.2); }
-    .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
+    
+    .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+    .loading-box { background: white; border-radius: 1rem; padding: 2rem; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .spinner { width: 36px; height: 36px; border: 4px solid #e2e8f0; border-top-color: var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* --- Strict Print Rules --- */
     @media print {
-      body { background: white; margin: 0; padding: 0; }
+      html, body { width: 210mm; height: 297mm; margin: 0; padding: 0; background: white; overflow: hidden !important; }
       .no-print, #control-panel, #camera-app, .loading-overlay { display: none !important; }
-      .preview-wrapper { margin: 0; transform: none; }
-      .a4-page { box-shadow: none; border-radius: 0; width: 210mm; height: 297mm; margin: 0; page-break-after: avoid; }
+      .preview-wrapper { margin: 0; padding: 0; transform: none; display: block; overflow: hidden; }
+      .a4-page { box-shadow: none; border: none; border-radius: 0; width: 210mm; height: 297mm; max-height: 297mm; page-break-after: avoid; page-break-inside: avoid; }
     }
   </style>
 </head>
 <body>
-  <div id="control-panel" class="no-print w-full max-w-4xl control-panel rounded-2xl p-5 md:p-6 mx-3 mb-6 mt-4">
-    <div class="flex justify-between items-center mb-5 pb-4 border-b border-gray-200">
+  <!-- لوحة التحكم (مخفية عند الطباعة) -->
+  <div id="control-panel" class="no-print w-full max-w-4xl control-panel rounded-2xl p-5 mx-auto mb-6 mt-4">
+    <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
       <div>
-        <h2 class="text-xl md:text-2xl font-black text-primary" style="font-family:Cairo">منصة التقارير الذكية</h2>
-        <p class="text-xs text-gray-500 mt-0.5">مدعوم بالذكاء الاصطناعي · اكتب وصف النشاط وسيتولى النظام الباقي</p>
+        <h2 class="text-xl font-black text-primary" style="font-family:Cairo">منصة التقارير الذكية</h2>
+        <p class="text-xs text-gray-500 mt-0.5">نظام متكامل لتوليد التقارير في صفحة واحدة</p>
       </div>
-      <span class="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-200">جاهز</span>
+      <button onclick="toggleSettings()" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 transition">
+        ⚙️ إعدادات API
+      </button>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-      <div class="lg:col-span-2 space-y-4">
-        <div class="card">
+
+    <!-- قسم الإعدادات (المفتاح) -->
+    <div id="settings-section" class="hidden bg-blue-50 border border-blue-100 rounded-lg p-4 mb-4">
+      <label class="input-label text-blue-800">مفتاح الذكاء الاصطناعي (Gemini API Key)</label>
+      <p class="text-[10px] text-blue-600 mb-2">لضمان عمل النظام بعد رفعه على GitHub، يجب وضع مفتاحك الخاص. يتم حفظه في متصفحك فقط.</p>
+      <input type="password" id="api-key-input" class="input-field text-sm" placeholder="أدخل مفتاح Gemini هنا (AIzaSy...)" onchange="saveApiKey(this.value)">
+      <div class="mt-2 text-[10px]">
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 underline font-bold">احصل على مفتاح مجاني من هنا</a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 space-y-3">
+        <div class="card p-4">
           <div><label class="input-label">العنوان الرئيسي</label><input type="text" id="input-title" class="input-field font-bold" placeholder="مثال: تفعيل اليوم الوطني 94" oninput="syncTitleToReport()"></div>
-          <div class="mt-4"><label class="input-label">وصف النشاط</label><textarea id="general-desc" rows="4" class="input-field resize-none" placeholder="مثال: قمنا بتفعيل اليوم الوطني ونفذنا مسابقات بحضور 50 طالب..." oninput="handleDescChange()"></textarea></div>
-          <div class="flex gap-3 mt-4">
-            <button onclick="generateAll()" id="btn-generate" class="btn btn-primary flex-1"><span id="btn-text">توليد التقرير بالذكاء الاصطناعي</span></button>
-            <button onclick="window.print()" class="btn btn-dark">تصدير PDF</button>
-            <button onclick="exportAsImage()" class="btn btn-dark">صورة</button>
+          <div class="mt-3"><label class="input-label">وصف النشاط مختصر</label><textarea id="general-desc" rows="3" class="input-field resize-none text-sm" placeholder="مثال: قمنا بتفعيل اليوم الوطني بمسابقات لـ 50 طالب..." oninput="handleDescChange()"></textarea></div>
+          <div class="flex flex-wrap gap-2 mt-3">
+            <button onclick="generateAll()" class="btn btn-primary flex-1 min-w-[200px]">✨ توليد التقرير</button>
+            <button onclick="window.print()" class="btn btn-dark">طباعة PDF</button>
+            <button onclick="exportAsImage()" class="btn btn-outline">صورة</button>
           </div>
         </div>
-        <div id="subtitles-area" class="card hidden">
-          <div class="flex justify-between items-center"><h3 class="card-header mb-0">العناوين الفرعية المُولّدة</h3><span class="text-xs text-gray-400">اسحب للإعادة ترتيب</span></div>
-          <div id="subtitle-blocks" class="space-y-3 mt-3"></div>
-          <div class="flex gap-2 mt-3">
-            <button onclick="addSubtitle()" class="btn btn-outline btn-sm text-xs">+ إضافة عنوان</button>
-            <button onclick="regenerateContent()" id="btn-regenerate" class="btn btn-primary btn-sm text-xs"><span id="btn-regen-text">إعادة التوليد والتحديث</span></button>
-          </div>
+        
+        <div id="subtitles-area" class="card p-4 hidden">
+          <div class="flex justify-between items-center mb-2"><h3 class="card-header mb-0">الهيكل (عناوين فرعية)</h3><button onclick="regenerateContent()" class="btn btn-primary btn-sm text-[10px]">🔄 إعادة توليد</button></div>
+          <div id="subtitle-blocks" class="space-y-2"></div>
         </div>
-        <div class="card">
-          <h3 class="card-header">الأدوات المستخدمة في التنفيذ</h3>
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-2" id="tools-checkboxes"></div>
-        </div>
-        <div class="card">
-          <div class="flex justify-between items-center flex-wrap gap-3"><span class="font-bold text-sm text-gray-700">الشواهد</span><div class="flex gap-2"><button onclick="openCamera()" class="btn btn-dark btn-sm text-xs">تصوير</button><label class="btn btn-outline btn-sm text-xs cursor-pointer">رفع <input type="file" id="input-images" accept="image/*" multiple class="hidden" onchange="handleFiles(this)"></label></div></div>
-          <div class="mt-3"><label class="input-label">رابط QR Code</label><input type="text" id="qr-link" class="input-field text-sm" dir="ltr" value="https://moe.gov.sa" oninput="generateQR()"></div>
+
+        <div class="card p-4">
+          <div class="flex justify-between items-center mb-2"><span class="font-bold text-sm text-primary">شواهد التنفيذ (صورتين كحد أقصى)</span><div class="flex gap-1"><button onclick="openCamera()" class="btn btn-dark btn-sm text-xs">📷 كاميرا</button><label class="btn btn-outline btn-sm text-xs cursor-pointer">📁 رفع<input type="file" id="input-images" accept="image/*" multiple class="hidden" onchange="handleFiles(this)"></label></div></div>
         </div>
       </div>
-      <div class="space-y-4">
-        <div class="card"><h3 class="card-header">البيانات الأساسية</h3><div class="space-y-2"><div><label class="input-label">المدرسة</label><input type="text" id="input-school" value="سهيل بن عمرو الثانوية" class="input-field text-sm font-bold text-primary" oninput="syncInfo()"></div><div><label class="input-label">مدير المدرسة</label><input type="text" id="input-director" value="فيصل العلياني" class="input-field text-sm" oninput="syncInfo()"></div><div class="grid grid-cols-2 gap-2"><div><label class="input-label">التاريخ</label><input type="text" id="input-date" class="input-field text-sm text-center" dir="ltr" oninput="syncInfo()"></div><div><label class="input-label">المجال</label><input type="text" id="input-domain" value="عام" class="input-field text-sm text-center" oninput="syncInfo()"></div></div><div><label class="input-label">المكان</label><input type="text" id="input-location" value="داخل المدرسة" class="input-field text-sm text-center" oninput="syncInfo()"></div></div></div>
-        <div class="card"><h3 class="card-header">مسمى المنفذ (التذييل)</h3><input type="text" id="input-executor" value="معلم" class="input-field text-sm" oninput="syncInfo()"><div class="flex flex-wrap gap-2 mt-2"><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('معلم')">معلم</span><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('وكيل')">وكيل</span><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('موجه طلابي')">موجه طلابي</span><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('رائد نشاط')">رائد نشاط</span></div></div>
+
+      <div class="space-y-3">
+        <div class="card p-4"><h3 class="card-header mb-2">البيانات الأساسية</h3><div class="space-y-2">
+          <div><label class="text-[10px] text-gray-500 font-bold">المدرسة</label><input type="text" id="input-school" value="سهيل بن عمرو الثانوية" class="input-field text-sm py-1.5" oninput="syncInfo()"></div>
+          <div><label class="text-[10px] text-gray-500 font-bold">التاريخ</label><input type="text" id="input-date" class="input-field text-sm py-1.5 text-center" dir="ltr" oninput="syncInfo()"></div>
+          <div><label class="text-[10px] text-gray-500 font-bold">المجال والمكان</label><div class="flex gap-1"><input type="text" id="input-domain" value="عام" class="input-field text-sm py-1.5 text-center w-1/2" oninput="syncInfo()"><input type="text" id="input-location" value="الساحة" class="input-field text-sm py-1.5 text-center w-1/2" oninput="syncInfo()"></div></div>
+        </div></div>
+        <div class="card p-4"><h3 class="card-header mb-2">التوقيعات والأدوات</h3>
+          <div class="flex gap-2 mb-2"><div class="w-1/2"><label class="text-[10px] text-gray-500 font-bold">المنفذ</label><input type="text" id="input-executor" value="معلم" class="input-field text-sm py-1" oninput="syncInfo()"></div><div class="w-1/2"><label class="text-[10px] text-gray-500 font-bold">المدير</label><input type="text" id="input-director" value="فيصل العلياني" class="input-field text-sm py-1" oninput="syncInfo()"></div></div>
+          <div class="mb-2"><label class="text-[10px] text-gray-500 font-bold">رابط التوثيق (QR)</label><input type="text" id="qr-link" class="input-field text-[10px] py-1" dir="ltr" value="https://moe.gov.sa" oninput="generateQR()"></div>
+          <div class="h-28 overflow-y-auto border rounded p-1" id="tools-checkboxes"></div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- الكاميرا -->
   <div id="camera-app">
     <div class="cam-header"><button onclick="switchCamera()" class="cam-btn">↻</button><button onclick="closeCamera()" class="cam-btn danger">✕</button></div>
-    <div class="cam-viewfinder"><video id="cam-video" autoplay playsinline muted></video><div id="camera-flash"></div></div>
-    <div class="cam-controls"><div class="zoom-controls"><button onclick="setZoom(1, this)" class="zoom-btn active">1×</button><button onclick="setZoom(1.5, this)" class="zoom-btn">1.5×</button><button onclick="setZoom(2, this)" class="zoom-btn">2×</button></div><div class="shutter-row"><div class="shutter-btn" onclick="capturePhoto()"><div class="shutter-inner"></div></div><div class="gallery-thumb" id="gallery-preview">0/2</div></div></div>
+    <div class="cam-viewfinder"><video id="cam-video" autoplay playsinline muted></video></div>
+    <div class="cam-controls"><div class="shutter-row"><div class="shutter-btn" onclick="capturePhoto()"><div class="shutter-inner"></div></div></div></div>
     <canvas id="hidden-canvas" class="hidden"></canvas>
-    <div id="review-screen"><div class="review-image-area"><img id="review-img" src="" alt="معاينة"></div><div class="review-actions"><button class="review-action-btn retry" onclick="discardPhoto()">إعادة</button><button class="review-action-btn accept" onclick="acceptPhoto()">استخدام</button></div></div>
+    <div id="review-screen"><div class="review-image-area"><img id="review-img" src=""></div><div class="review-actions"><button class="review-action-btn" onclick="discardPhoto()">إلغاء</button><button class="review-action-btn accept" onclick="acceptPhoto()">اعتماد</button></div></div>
   </div>
 
-  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-box"><div class="spinner"></div><p class="font-bold text-primary">جاري صياغة التقرير بذكاء...</p></div></div>
+  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-box"><div class="spinner"></div><p class="font-bold text-primary text-sm">جاري صياغة التقرير بذكاء للمواءمة مع الصفحة...</p></div></div>
 
+  <!-- ورقة التقرير A4 -->
   <div class="preview-wrapper" id="preview-wrapper">
     <div id="report-element" class="a4-page">
-      <div class="report-header"><div class="header-content"><div class="header-right"><p class="text-[11pt] font-bold leading-tight font-heading">المملكة العربية السعودية</p><p class="text-[10pt] font-bold leading-tight mt-1 font-heading">الإدارة العامة للتعليم بمنطقة عسير</p></div><div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[65px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div><div class="header-left"><div class="header-left-inner"><p class="text-[12pt] font-black leading-tight text-white font-heading">وزارة التعليم</p><p class="text-[10pt] font-bold leading-tight mt-1 text-accent font-heading" id="display-school">سهيل بن عمرو الثانوية</p></div></div></div></div>
+      <div class="report-header">
+        <div class="header-content">
+          <div class="header-right"><p class="text-[10pt] font-bold leading-tight font-heading">المملكة العربية السعودية</p><p class="text-[9pt] font-bold leading-tight mt-0.5 font-heading">الإدارة العامة للتعليم بمنطقة عسير</p></div>
+          <div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[55px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div>
+          <div class="header-left"><div class="header-left-inner"><p class="text-[11pt] font-black leading-tight text-white font-heading">وزارة التعليم</p><p class="text-[9pt] font-bold leading-tight mt-0.5 text-accent font-heading" id="display-school">سهيل بن عمرو الثانوية</p></div></div>
+        </div>
+      </div>
       <div class="title-badge-wrapper"><div class="title-badge" id="display-title">عنوان التقرير</div></div>
       <div class="info-bar-wrapper">
         <div class="info-bar">
-          <div class="info-item"><span class="info-label">اليوم والتاريخ</span><span class="info-value" id="display-date"></span></div>
+          <div class="info-item"><span class="info-label">التاريخ</span><span class="info-value" id="display-date"></span></div>
           <div class="info-item"><span class="info-label">المجال</span><span class="info-value" id="display-domain">عام</span></div>
-          <div class="info-item"><span class="info-label">مكان التنفيذ</span><span class="info-value" id="display-location">داخل المدرسة</span></div>
-          <div class="info-item"><span class="info-label">الأدوات</span><span class="info-value tools-list" id="display-tools"></span></div>
+          <div class="info-item"><span class="info-label">المكان</span><span class="info-value" id="display-location">الساحة</span></div>
+          <div class="info-item"><span class="info-label">الأدوات</span><div class="info-value tools-list" id="display-tools"></div></div>
         </div>
       </div>
+      
+      <!-- المنطقة الأساسية الممنوعة من التمرير -->
       <div class="main-content-area">
         <div id="template-teacher">
           <div class="teacher-text-col" id="teacher-content">
-            <p class="text-gray-400 text-center mt-10 text-sm">اكتب وصف النشاط واضغط "توليد التقرير بالذكاء الاصطناعي"</p>
+            <p class="text-gray-400 text-center mt-10 text-[10px]">الرجاء إدخال وصف النشاط في لوحة التحكم والضغط على "توليد التقرير"</p>
           </div>
           <div class="teacher-evidence-col">
-            <div class="evidence-header-bar teacher-style">شواهد التنفيذ</div>
-            <div class="evidence-container teacher-container" id="teacher-evidence">
-              <div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 1</span></div>
-              <div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>
+            <div class="evidence-header-bar">شواهد التنفيذ</div>
+            <div class="evidence-container" id="teacher-evidence">
+              <div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 1</span></div>
+              <div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 2</span></div>
             </div>
           </div>
         </div>
       </div>
+      
+      <!-- التذييل الثابت -->
       <div class="report-footer">
-        <div class="text-center w-1/3"><p class="font-heading text-[10pt] font-bold text-primary mb-2">المنفذ</p><p id="display-footer-executor" class="font-body text-[11pt] font-medium text-gray-700">معلم</p></div>
-        <div class="text-center w-1/3 flex justify-center"><div id="qrcode" class="border p-1 bg-white rounded"></div></div>
-        <div class="text-center w-1/3"><p class="font-heading text-[10pt] font-bold text-primary mb-2">مدير المدرسة</p><p id="display-director" class="font-heading text-[11pt] font-bold text-secondary">فيصل العلياني</p></div>
+        <div class="text-center w-1/3"><p class="font-heading text-[9pt] font-bold text-primary mb-1">المنفذ</p><p id="display-footer-executor" class="font-body text-[10pt] font-medium text-gray-700">معلم</p></div>
+        <div class="text-center w-1/3 flex justify-center"><div id="qrcode" class="border p-0.5 bg-white rounded"></div></div>
+        <div class="text-center w-1/3"><p class="font-heading text-[9pt] font-bold text-primary mb-1">مدير المدرسة</p><p id="display-director" class="font-heading text-[10pt] font-bold text-secondary">فيصل العلياني</p></div>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      const apiKey = ""; 
-      const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+      // --- نظام المفاتيح لحل مشكلة GitHub ---
+      window.toggleSettings = function() {
+        document.getElementById('settings-section').classList.toggle('hidden');
+      };
       
-      const TOOLS_LIST = [
-        'سبورة', 'قلم', 'لابتوب', 'جهاز كمبيوتر', 'أوراق عمل', 'عرض تقديمي', 'فيديو تعليمي',
-        'مسجل', 'سماعات', 'جهاز عرض', 'بروجكتر', 'سبورة تفاعلية', 'بطاقات', 'مجسمات'
-      ];
+      window.saveApiKey = function(val) {
+        localStorage.setItem('gemini_api_key', val.trim());
+      };
+
+      function getApiKey() {
+        return localStorage.getItem('gemini_api_key') || "";
+      }
+      // ----------------------------------------
+
+      // تمت استعادة جميع الأدوات بناءً على طلبك
+      const TOOLS_LIST = ['سبورة', 'قلم', 'لابتوب', 'جهاز كمبيوتر', 'أوراق عمل', 'عرض تقديمي', 'فيديو تعليمي', 'مسجل', 'سماعات', 'جهاز عرض', 'بروجكتر', 'سبورة تفاعلية', 'بطاقات', 'مجسمات'];
 
       const state = {
-        images: [], charts: [], stream: null, facingMode: 'environment', zoom: 1,
-        tempPhoto: null, videoReady: false, subtitles: [], descriptions: {},
-        generalDesc: '', aiGeneratedContent: null, selectedTools: new Set()
+        images: [], stream: null, facingMode: 'environment', tempPhoto: null, videoReady: false,
+        subtitles: [], descriptions: {}, generalDesc: '', selectedTools: new Set()
       };
-      let draggedIndex = null;
-      window.reportChartInstance = null; // متغير لضمان عدم تكرار رسم الـ Chart
+      window.reportChartInstance = null;
 
       window.addEventListener('load', () => {
         document.getElementById('input-date').value = new Date().toLocaleDateString('ar-SA');
+        const savedKey = getApiKey();
+        if(savedKey) document.getElementById('api-key-input').value = savedKey;
         syncInfo(); generateQR(); renderEvidence(); renderToolsCheckboxes();
       });
 
       function renderToolsCheckboxes() {
         const container = document.getElementById('tools-checkboxes');
         container.innerHTML = TOOLS_LIST.map(tool => `
-          <label class="flex items-center gap-2 bg-gray-50 p-2 rounded-lg border cursor-pointer hover:bg-green-50 transition">
-            <input type="checkbox" value="${tool}" onchange="toggleTool('${tool}', this.checked)" class="accent-secondary">
-            <span class="text-sm font-medium text-gray-700">${tool}</span>
+          <label class="flex items-center gap-1.5 p-1 hover:bg-gray-50 cursor-pointer">
+            <input type="checkbox" value="${tool}" onchange="toggleTool('${tool}', this.checked)" class="accent-secondary w-3 h-3">
+            <span class="text-[10px] text-gray-700">${tool}</span>
           </label>
         `).join('');
       }
 
       window.toggleTool = function(tool, isChecked) {
-        if (isChecked) state.selectedTools.add(tool);
-        else state.selectedTools.delete(tool);
+        if (isChecked) state.selectedTools.add(tool); else state.selectedTools.delete(tool);
         updateToolsDisplay();
       };
-
+      
       function updateToolsDisplay() {
         const container = document.getElementById('display-tools');
-        if (!container) return;
-        container.innerHTML = [...state.selectedTools].map(t => `<span>${t}</span>`).join('');
+        // تم إزالة قيد العدد، سيتم عرض جميع الأدوات المختارة
+        if (container) container.innerHTML = [...state.selectedTools].map(t => `<span>${t}</span>`).join(''); 
       }
 
       window.syncInfo = function() {
         document.getElementById('display-school').innerText = document.getElementById('input-school')?.value || '...';
         document.getElementById('display-director').innerText = document.getElementById('input-director')?.value || '...';
         document.getElementById('display-date').innerText = document.getElementById('input-date')?.value || '';
-        document.getElementById('display-domain').innerText = document.getElementById('input-domain')?.value || 'عام';
-        document.getElementById('display-location').innerText = document.getElementById('input-location')?.value || 'داخل المدرسة';
-        document.getElementById('display-footer-executor').innerText = document.getElementById('input-executor')?.value || 'معلم';
+        document.getElementById('display-domain').innerText = document.getElementById('input-domain')?.value || '';
+        document.getElementById('display-location').innerText = document.getElementById('input-location')?.value || '';
+        document.getElementById('display-footer-executor').innerText = document.getElementById('input-executor')?.value || '';
       };
       window.syncTitleToReport = function() { document.getElementById('display-title').innerText = document.getElementById('input-title')?.value || 'عنوان التقرير'; };
       window.generateQR = function() {
         const link = document.getElementById('qr-link')?.value || 'https://moe.gov.sa';
         const qr = document.getElementById('qrcode');
-        if(qr){ qr.innerHTML = ''; new QRCode(qr, { text: link, width: 60, height: 60, colorDark: '#1a365d', colorLight: '#ffffff' }); }
+        if(qr){ qr.innerHTML = ''; new QRCode(qr, { text: link, width: 50, height: 50, colorDark: '#1a365d', colorLight: '#ffffff' }); }
       };
       window.exportAsImage = function() {
         html2canvas(document.getElementById('report-element'), { scale: 2 }).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'تقرير.png';
-          link.href = canvas.toDataURL('image/png');
-          link.click();
+          const link = document.createElement('a'); link.download = 'تقرير.png'; link.href = canvas.toDataURL('image/png'); link.click();
         });
       };
+      
+      // Camera Functions
       window.openCamera = function() { if(state.images.length >= 2) return alert('الحد الأقصى صورتان'); document.getElementById('camera-app').style.display = 'flex'; startStream(); };
       window.closeCamera = function() { stopStream(); document.getElementById('camera-app').style.display = 'none'; document.getElementById('review-screen').style.display = 'none'; };
       function stopStream() { if(state.stream){ state.stream.getTracks().forEach(t=>t.stop()); state.stream=null; } document.getElementById('cam-video').srcObject=null; state.videoReady=false; }
-      async function startStream() { stopStream(); try { state.stream=await navigator.mediaDevices.getUserMedia({ video:{ facingMode:{ ideal:state.facingMode }, width:1280, height:720 }, audio:false }); const v=document.getElementById('cam-video'); v.srcObject=state.stream; await v.play(); state.videoReady=true; } catch(e) { alert('تعذر الوصول للكاميرا'); closeCamera(); } }
+      async function startStream() { stopStream(); try { state.stream=await navigator.mediaDevices.getUserMedia({ video:{ facingMode:{ ideal:state.facingMode } }, audio:false }); const v=document.getElementById('cam-video'); v.srcObject=state.stream; await v.play(); state.videoReady=true; } catch(e) { alert('تعذر الوصول للكاميرا'); closeCamera(); } }
       window.switchCamera = function() { state.facingMode = state.facingMode==='environment'?'user':'environment'; startStream(); };
-      window.setZoom = function(v, btn) { document.querySelectorAll('.zoom-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); state.zoom=v; document.getElementById('cam-video').style.transform=`scale(${v})`; };
       window.capturePhoto = function() {
         if(!state.videoReady || state.images.length>=2) return;
         const v=document.getElementById('cam-video'), c=document.getElementById('hidden-canvas'), ctx=c.getContext('2d');
         c.width=v.videoWidth; c.height=v.videoHeight; ctx.drawImage(v,0,0);
-        state.tempPhoto = c.toDataURL('image/jpeg', 0.9);
-        document.getElementById('review-img').src = state.tempPhoto;
-        document.getElementById('review-screen').style.display='flex';
-        document.querySelector('.cam-controls').style.display='none';
-        document.querySelector('.cam-header').style.display='none';
+        state.tempPhoto = c.toDataURL('image/jpeg', 0.8);
+        document.getElementById('review-img').src = state.tempPhoto; document.getElementById('review-screen').style.display='flex';
       };
-      window.discardPhoto = function() { state.tempPhoto=null; document.getElementById('review-screen').style.display='none'; document.querySelector('.cam-controls').style.display=''; document.querySelector('.cam-header').style.display=''; };
+      window.discardPhoto = function() { state.tempPhoto=null; document.getElementById('review-screen').style.display='none'; };
       window.acceptPhoto = function() { if(state.tempPhoto){ state.images.push(state.tempPhoto); renderEvidence(); if(state.images.length>=2) closeCamera(); else discardPhoto(); } };
       window.handleFiles = function(input) { [...input.files].slice(0,2).forEach(f=>{ const r=new FileReader(); r.onload=e=>{ state.images.push(e.target.result); renderEvidence(); }; r.readAsDataURL(f); }); };
-      window.handleDescChange = function() { };
-      window.setExecutor = function(title){ document.getElementById('input-executor').value=title; syncInfo(); };
 
-      // --- دوال الاتصال بالذكاء الاصطناعي مع قيود صارمة ---
-      async function callAI(mainTitle, generalDesc, subtitles, descriptions) {
-        let subContext = subtitles.map((t, i) => `- ${t} (${descriptions[i] || 'بدون وصف إضافي'})`).join('\n');
+      // AI Logic
+      async function callAI(mainTitle, generalDesc, subtitles) {
+        const apiKey = getApiKey();
+        if(!apiKey) throw new Error("API_KEY_MISSING");
+
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
         
-        const systemPrompt = `أنت مساعد خبير في صياغة تقارير مدرسية من صفحة واحدة، قصيرة جداً، ومختصرة بصرامة لتجنب تجاوز مساحة الصفحة.
-الشرط الأساسي: إرجاع الرد بصيغة JSON حصراً.
-يجب أن يحتوي الـ JSON على كائن "sections"، وداخله المفاتيح التالية حصراً:
-${subtitles.map(s=>`"${s}"`).join(', ')}
+        const systemPrompt = `أنت محرك صياغة لتقارير مدرسية. مساحة التقرير ضيقة جداً (صفحة A4 واحدة فقط)، لذا يجب الالتزام بالاختصار الشديد.
+يجب إرجاع الرد بصيغة JSON حصراً.
+يجب أن يحتوي الـ JSON على كائن "sections" يضم المفاتيح التالية: ${subtitles.join(', ')}.
 
-قواعد صارمة جداً لتنسيق محتوى كل قسم:
-1. إذا كان العنوان يحتوي على "مقدمة": النص يجب أن يكون سلسلة نصية (String) لا تتجاوز 12 كلمة بأي حال.
-2. إذا كان العنوان يحتوي على "أهداف" أو "أثر": القيمة يجب أن تكون مصفوفة (Array of Strings) تتكون من 3 نقاط فقط. كل نقطة يجب ألا تتجاوز 5 كلمات كحد أقصى.
-3. إذا كان العنوان يحتوي على "تنفيذ" أو "ما تم": القيمة يجب أن تكون كائن جدول (Table Object) مختصر جداً.
-   صيغته: {"type": "table", "headers": ["الخطوة", "الوصف المختصر"], "rows": [["1", "كلمتين"], ["2", "كلمتين"]]} (الصفوف 3 كحد أقصى).
-4. إذا كان العنوان يحتوي على "رسم" أو "إحصائيات": القيمة يجب أن تكون كائن رسم بياني.
-   صيغته: {"type": "chart", "labels": ["ممتاز", "جيد", "مقبول"], "values": [70, 20, 10]}.
-5. أي عنوان آخر: نص قصير (String) لا يتجاوز 10 كلمات.
+شروط التنسيق لكل مفتاح:
+1. "المقدمة" أو ما يشابهها: نص (String) جملة واحدة لا تتجاوز 10 كلمات.
+2. "الأهداف" أو "الأثر": مصفوفة (Array) من 3 نقاط فقط. كل نقطة لا تتجاوز 5 كلمات.
+3. "ما تم تنفيذه" أو "الخطوات": كائن جدول (Table). مثال: {"type": "table", "headers": ["البند", "الوصف"], "rows": [["1", "كلمتين"], ["2", "كلمتين"]]} (صفين أو 3 فقط).
+4. "إحصائيات" أو "رسم بياني": كائن رسم (Chart). مثال: {"type": "chart", "labels": ["ممتاز", "جيد"], "values": [80, 20]}.`;
 
-الاختصار هو الأهم! تذكر أن المساحة ضيقة جداً ولا يوجد شريط تمرير.`;
+        const userMsg = `النشاط: "${mainTitle}"\nالوصف: "${generalDesc}"\nقم بتوليد العناوين: ${subtitles.join(', ')}`;
 
-        const userMsg = `عنوان التقرير: "${mainTitle}"\nالوصف العام للنشاط: "${generalDesc}"\n\nالعناوين المطلوبة:\n${subContext}`;
+        const payload = { contents: [{ parts: [{ text: userMsg }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { responseMimeType: "application/json" } };
 
-        const payload = {
-          contents: [{ parts: [{ text: userMsg }] }],
-          systemInstruction: { parts: [{ text: systemPrompt }] },
-          generationConfig: { responseMimeType: "application/json" }
-        };
-
-        const maxRetries = 5;
-        const delays = [1000, 2000, 4000, 8000, 16000];
-
-        for (let attempt = 0; attempt <= maxRetries; attempt++) {
-          try {
-            const response = await fetch(API_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-            const data = await response.json();
-            const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (!textContent) throw new Error("لا يوجد محتوى في الرد");
-
-            return JSON.parse(textContent);
-          } catch (error) {
-            if (attempt === maxRetries) throw error;
-            await new Promise(resolve => setTimeout(resolve, delays[attempt]));
-          }
-        }
+        const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (!response.ok) throw new Error(response.status === 400 ? "INVALID_KEY" : `HTTP Error: ${response.status}`);
+        
+        const data = await response.json();
+        const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!textContent) throw new Error("NO_CONTENT");
+        return JSON.parse(textContent);
       }
 
       window.generateAll = function() {
@@ -439,27 +479,16 @@ ${subtitles.map(s=>`"${s}"`).join(', ')}
         if(!desc) return alert('الرجاء كتابة وصف النشاط للبدء');
         state.generalDesc = desc;
 
-        // تهيئة العناوين الافتراضية المدمجة مع الرسم البياني
         if (state.subtitles.length === 0) {
-          const initSubs = [
-            {title:'المقدمة',desc:'تمهيد مبسط للنشاط'},
-            {title:'الأهداف',desc:'أهداف النشاط'},
-            {title:'ما تم تنفيذه',desc:'خطوات التنفيذ بجدول'},
-            {title:'الأثر',desc:'النتائج والأثر الملموس'},
-            {title:'رسم بياني للتفاعل',desc:'إحصائية نسبة الإنجاز والتفاعل'}
-          ];
-          state.subtitles = initSubs.map(s=>s.title);
-          state.descriptions = {};
-          initSubs.forEach((s,i)=>{ state.descriptions[i]=s.desc; });
+          state.subtitles = ['المقدمة', 'الأهداف', 'ما تم تنفيذه', 'الأثر', 'رسم بياني للإنجاز'];
           renderSubtitleBlocks();
         }
-
         document.getElementById('subtitles-area').classList.remove('hidden');
         processGeneration();
       };
 
       window.regenerateContent = function() {
-        if(!state.generalDesc) return alert('الرجاء كتابة وصف النشاط أولاً');
+        if(!state.generalDesc) return alert('اكتب الوصف أولاً');
         processGeneration();
       };
 
@@ -467,14 +496,18 @@ ${subtitles.map(s=>`"${s}"`).join(', ')}
         const title = document.getElementById('input-title')?.value?.trim() || 'تقرير نشاط';
         showLoading();
         try {
-          const aiData = await callAI(title, state.generalDesc, state.subtitles, state.descriptions);
-          state.aiGeneratedContent = aiData;
+          const aiData = await callAI(title, state.generalDesc, state.subtitles);
           renderAIContent(aiData);
-          syncInfo(); syncTitleToReport(); generateQR(); renderEvidence(); updateToolsDisplay();
+          syncInfo(); syncTitleToReport(); generateQR();
         } catch(e) {
           console.error(e);
-          alert("حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. الرجاء المحاولة مرة أخرى.");
-          renderLocalContent();
+          if(e.message === "API_KEY_MISSING" || e.message === "INVALID_KEY") {
+            alert("مفتاح API غير موجود أو غير صالح. الرجاء إدخال المفتاح الصحيح من الإعدادات.");
+            document.getElementById('settings-section').classList.remove('hidden');
+            renderLocalError("تأكد من إدخال مفتاح Gemini API في لوحة الإعدادات.");
+          } else {
+            renderLocalError("حدث خطأ في الاتصال بالذكاء الاصطناعي.");
+          }
         } finally {
           hideLoading();
         }
@@ -482,87 +515,53 @@ ${subtitles.map(s=>`"${s}"`).join(', ')}
 
       function renderSubtitleBlocks() {
         document.getElementById('subtitle-blocks').innerHTML = state.subtitles.map((t,i)=>`
-          <div draggable="true" ondragstart="dragStart(event,${i})" ondragover="event.preventDefault()" ondrop="drop(event,${i})" class="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border cursor-move">
-            <div class="flex gap-2"><input type="text" value="${t}" oninput="updateSubtitle(${i},this.value)" class="input-field text-sm flex-1"><button onclick="removeSubtitle(${i})" class="text-red-400 font-bold px-2">✕</button></div>
-            <textarea rows="1" class="input-field text-xs resize-none" placeholder="ملاحظات للذكاء الاصطناعي حول هذا القسم..." oninput="updateDescription(${i},this.value)">${state.descriptions[i]||''}</textarea>
+          <div class="flex gap-1 items-center">
+            <input type="text" value="${t}" oninput="state.subtitles[${i}]=this.value.trim()" class="input-field text-[10px] py-1 flex-1">
           </div>`).join('');
       }
-      window.updateSubtitle = (i,v)=> { state.subtitles[i]=v.trim(); };
-      window.updateDescription = (i,v)=> { state.descriptions[i]=v; };
-      window.addSubtitle = ()=> { if(state.subtitles.length<5){ state.subtitles.push(''); renderSubtitleBlocks(); } else { alert('الحد الأقصى 5 عناوين فرعية'); } };
-      window.removeSubtitle = (i)=> { state.subtitles.splice(i,1); renderSubtitleBlocks(); };
-      window.dragStart = (e,i)=> { draggedIndex=i; };
-      window.drop = (e,target)=> {
-        e.preventDefault();
-        if(draggedIndex!==null && draggedIndex!==target) {
-          [state.subtitles[draggedIndex], state.subtitles[target]] = [state.subtitles[target], state.subtitles[draggedIndex]];
-          [state.descriptions[draggedIndex], state.descriptions[target]] = [state.descriptions[target], state.descriptions[draggedIndex]];
-          renderSubtitleBlocks();
-        }
-      };
 
       function renderAIContent(ai) {
-        if(window.reportChartInstance instanceof Chart) { window.reportChartInstance.destroy(); window.reportChartInstance = null; }
-        
-        const sections = ai?.sections || {};
-        let html = '';
-        let hasChart = false;
-        let chartData = null;
+        if(window.reportChartInstance) { window.reportChartInstance.destroy(); window.reportChartInstance = null; }
+        const sections = ai?.sections || {}; let html = ''; let chartData = null;
 
-        state.subtitles.forEach((title, idx)=>{
+        state.subtitles.forEach((title)=>{
           const content = sections[title];
-          if(!content) { html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><p class="text-xs text-gray-500">لا يوجد محتوى</p></div>`; return; }
+          if(!content) return;
           
           if(title.includes('مقدمة') && typeof content === 'string') {
-            html+=`<div class="intro-section"><span class="intro-heading">${title}</span><span class="intro-text">${content}</span></div>`;
-          } 
-          else if(content.type === 'table' || (content.headers && content.rows)) {
+            html+=`<div class="intro-section"><span class="intro-heading">${title}</span><div class="intro-text">${content}</div></div>`;
+          } else if(content.type === 'table' || (content.headers && content.rows)) {
             html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><table class="report-table"><thead><tr>${content.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${content.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-          }
-          else if(content.type === 'chart') {
+          } else if(content.type === 'chart') {
             html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><div class="chart-container"><canvas id="ai-chart-canvas"></canvas></div></div>`;
-            hasChart = true; chartData = content;
-          }
-          else if(Array.isArray(content)) {
+            chartData = content;
+          } else if(Array.isArray(content)) {
             html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><ul class="bullet-list">${content.map(c=>`<li class="bullet-item">${c}</li>`).join('')}</ul></div>`;
-          }
-          else if(typeof content === 'string') {
-             html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><p class="intro-text">${content}</p></div>`;
+          } else if(typeof content === 'string') {
+             html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><div class="intro-text">${content}</div></div>`;
           }
         });
         
         document.getElementById('teacher-content').innerHTML = html;
 
-        // رسم الـ Chart بعد تحديث الـ DOM
-        if(hasChart && chartData) {
+        if(chartData) {
           setTimeout(() => {
             const ctx = document.getElementById('ai-chart-canvas');
             if(ctx) {
               window.reportChartInstance = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                  labels: chartData.labels || ['1', '2'],
-                  datasets: [{
-                    data: chartData.values || [50, 50],
-                    backgroundColor: ['#18a883', '#fde047', '#1a365d', '#cbd5e1'],
-                    borderWidth: 1
-                  }]
-                },
-                options: {
-                  responsive: true, maintainAspectRatio: false,
-                  plugins: { legend: { position: 'left', labels: { font: { family: 'Tajawal', size: 9 }, boxWidth: 10 } } },
-                  layout: { padding: 0 }
-                }
+                data: { labels: chartData.labels || ['نجاح','غير ذلك'], datasets: [{ data: chartData.values || [90, 10], backgroundColor: ['#18a883', '#cbd5e1'], borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'left', labels: { font: { family: 'Tajawal', size: 8 }, boxWidth: 8 } } }, layout: { padding: 0 }, cutout: '60%' }
               });
             }
-          }, 150);
+          }, 100);
         }
       }
-      function renderLocalContent() { document.getElementById('teacher-content').innerHTML = '<p class="text-red-500 text-center mt-10 text-sm">تعذر التوليد. تأكد من اتصال الإنترنت وحاول مجدداً.</p>'; }
+
+      function renderLocalError(msg) { document.getElementById('teacher-content').innerHTML = `<p class="text-red-500 text-center mt-10 text-xs font-bold">${msg}</p>`; }
       function renderEvidence() {
         const c = document.getElementById('teacher-evidence');
-        c.innerHTML = state.images.length ? state.images.map(s=>`<div class="photo-slot"><img src="${s}" class="w-full h-full object-cover"></div>`).join('') + (state.images.length===1?'<div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>':'') : '<div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 1</span></div><div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>';
-        document.getElementById('gallery-preview').innerHTML = state.images.length ? `<img src="${state.images[state.images.length-1]}" class="w-full h-full object-cover">` : '0/2';
+        c.innerHTML = state.images.length ? state.images.map(s=>`<div class="photo-slot"><img src="${s}" alt="شاهد"></div>`).join('') + (state.images.length===1?'<div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 2</span></div>':'') : '<div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 1</span></div><div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 2</span></div>';
       }
       function showLoading() { document.getElementById('loading-overlay').classList.remove('hidden'); }
       function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
