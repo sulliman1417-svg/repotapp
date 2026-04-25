@@ -89,6 +89,8 @@
     .card:hover { box-shadow: var(--shadow-md); }
     .card-header { font-family: 'Cairo', sans-serif; font-weight: 700; color: var(--primary); margin-bottom: 1rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
     .preview-wrapper { width: 100%; display: flex; justify-content: center; transform-origin: top center; margin-top: 24px; margin-bottom: 48px; position: relative; z-index: 10; }
+    
+    /* --- Report A4 Container --- */
     @page { size: A4 portrait; margin: 0; }
     .a4-page {
       width: 210mm; height: 297mm; background: white;
@@ -97,8 +99,9 @@
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
       padding: 0; margin: 0;
     }
+    
     .report-header {
-      position: relative; height: 48mm; width: 100%; flex-shrink: 0;
+      position: relative; height: 44mm; width: 100%; flex-shrink: 0;
       background: linear-gradient(135deg, #1a365d 0%, #0f2440 40%, #18a883 100%);
       border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; z-index: 10; overflow: hidden;
     }
@@ -108,47 +111,67 @@
     .header-center { width: 30%; display: flex; justify-content: center; }
     .header-left { text-align: right; width: 35%; padding-left: 4mm; }
     .header-left-inner { direction: rtl; }
-    .title-badge-wrapper { position: relative; margin-top: -7mm; z-index: 20; text-align: center; padding: 0 15mm; flex-shrink: 0; }
-    .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 10px 45px; border-radius: 9999px; font-family: 'Cairo', sans-serif; font-size: 15pt; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; border: 3px solid white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
-    .info-bar-wrapper { padding: 0 15mm; margin-top: 6mm; flex-shrink: 0; }
+    
+    .title-badge-wrapper { position: relative; margin-top: -6mm; z-index: 20; text-align: center; padding: 0 15mm; flex-shrink: 0; }
+    .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 8px 40px; border-radius: 9999px; font-family: 'Cairo', sans-serif; font-size: 14pt; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; border: 3px solid white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+    
+    .info-bar-wrapper { padding: 0 15mm; margin-top: 4mm; flex-shrink: 0; }
     .info-bar {
       display: grid; grid-template-columns: repeat(4, 1fr); background: white;
-      border-top: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; padding: 10px 0;
+      border-top: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; padding: 6px 0;
     }
-    .info-item {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      border-left: 1px solid #d1d5db; padding: 4px 8px;
-    }
+    .info-item { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #d1d5db; padding: 2px 6px; }
     .info-item:last-child { border-left: none; }
-    .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 10pt; }
-    .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 10.5pt; text-align: center; word-break: break-word; }
+    .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 9pt; }
+    .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 9.5pt; text-align: center; line-height: 1.2; word-break: break-word; }
+    
+    /* --- Core Content Area - Strictly No Scrolling --- */
     .main-content-area {
-      padding: 5mm 15mm; flex: 1; display: flex; flex-direction: column;
-      height: 198mm; max-height: 198mm; overflow: hidden;
+      padding: 4mm 15mm; flex: 1; display: flex; flex-direction: column;
+      overflow: hidden; /* STRICTLY NO SCROLLING */
     }
-    #template-teacher { display: flex; gap: 15px; height: 100%; width: 100%; }
-    .teacher-text-col { width: 50%; overflow-y: auto; padding-left: 4px; display: flex; flex-direction: column; }
-    .teacher-evidence-col { width: 50%; display: flex; flex-direction: column; overflow: hidden; }
-    .content-card { background: white; border: 1.5px solid #eab308; border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; box-shadow: var(--shadow-sm); transition: all var(--transition); }
-    .content-card:hover { box-shadow: var(--shadow-md); border-color: #fbbf24; }
-    .section-heading { font-family: 'Cairo', sans-serif; font-size: 13pt; font-weight: 900; color: var(--primary); border-bottom: 2.5px solid #eab308; display: inline-block; padding-bottom: 3px; margin-bottom: 8px; }
-    .intro-section { margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid var(--secondary); text-align: justify; display: flex; align-items: baseline; flex-wrap: wrap; }
-    .intro-heading { color: var(--secondary); font-weight: 900; font-size: 12pt; margin-left: 8px; white-space: nowrap; }
-    .intro-text { color: #000; font-weight: normal; font-size: 11pt; line-height: 1.8; word-wrap: break-word; flex: 1; }
-    .bullet-list { list-style: none; padding: 0; margin: 4px 0; }
-    .bullet-item { position: relative; padding-right: 20px; margin-bottom: 5px; font-size: 10.5pt; color: #334155; line-height: 1.7; text-align: justify; white-space: pre-wrap; }
-    .bullet-item::before { content: ''; position: absolute; right: 0; top: 8px; width: 7px; height: 7px; background: var(--secondary); border-radius: 50%; }
-    .report-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-top: 8px; border-radius: 8px; overflow: hidden; }
-    .report-table th { color: white; padding: 8px 10px; border: 1px solid; text-align: center; font-weight: 700; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #18a883, #0d9668); border-color: #0d9668; }
-    .report-table td { padding: 7px 10px; border: 1px solid #e2e8f0; color: #334155; text-align: center; }
+    #template-teacher { display: flex; gap: 12px; height: 100%; width: 100%; overflow: hidden; }
+    
+    /* Adjusted ratios: more space for text, less for evidence */
+    .teacher-text-col { width: 58%; padding-left: 5px; display: flex; flex-direction: column; overflow: hidden; }
+    .teacher-evidence-col { width: 42%; display: flex; flex-direction: column; overflow: hidden; }
+    
+    /* --- Content Elements Formatting --- */
+    .content-card { background: white; border: 1.5px solid #eab308; border-radius: 10px; padding: 6px 10px; margin-bottom: 6px; box-shadow: var(--shadow-sm); }
+    .section-heading { font-family: 'Cairo', sans-serif; font-size: 11pt; font-weight: 900; color: var(--primary); border-bottom: 2px solid #eab308; display: inline-block; padding-bottom: 2px; margin-bottom: 4px; }
+    
+    /* Intro Formatting */
+    .intro-section { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1.5px solid var(--secondary); display: flex; flex-direction: column; gap: 3px; }
+    .intro-heading { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 11pt; }
+    .intro-text { color: #1e293b; font-weight: 500; font-size: 9.5pt; line-height: 1.5; text-align: justify; }
+    
+    /* Bullets (Objectives/Impact) */
+    .bullet-list { list-style: none; padding: 0; margin: 2px 0; }
+    .bullet-item { position: relative; padding-right: 14px; margin-bottom: 3px; font-size: 9.5pt; color: #1e293b; line-height: 1.4; text-align: justify; font-weight: 500; }
+    .bullet-item::before { content: ''; position: absolute; right: 0; top: 6px; width: 5px; height: 5px; background: var(--secondary); border-radius: 50%; }
+    
+    /* Table (Implementation) */
+    .report-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin-top: 4px; border-radius: 6px; overflow: hidden; }
+    .report-table th { color: white; padding: 4px 6px; border: 1px solid #0d9668; text-align: center; font-weight: 700; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #18a883, #0d9668); }
+    .report-table td { padding: 4px 6px; border: 1px solid #e2e8f0; color: #1e293b; text-align: center; font-weight: 500; }
     .report-table tbody tr:nth-child(even) td { background: #f8fafc; }
-    .evidence-header-bar { color: white; font-family: 'Cairo', sans-serif; font-size: 13pt; font-weight: 700; text-align: center; padding: 6px; border-top-left-radius: 12px; border-top-right-radius: 12px; border: 1.5px solid; background: linear-gradient(135deg, #18a883, #0d9668); border-color: #18a883; }
-    .evidence-container { flex: 1; border: 1.5px solid #18a883; border-top: none; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
-    .photo-slot { flex: 1; width: 100%; border-radius: 10px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; border: 2px dashed #e2e8f0; min-height: 65px; transition: all var(--transition); }
+    
+    /* Chart Container */
+    .chart-container { height: 110px; width: 100%; position: relative; margin-top: 4px; }
+
+    /* Evidence Formatting */
+    .evidence-header-bar { color: white; font-family: 'Cairo', sans-serif; font-size: 11pt; font-weight: 700; text-align: center; padding: 4px; border-top-left-radius: 10px; border-top-right-radius: 10px; border: 1.5px solid; background: linear-gradient(135deg, #18a883, #0d9668); border-color: #18a883; }
+    .evidence-container { flex: 1; border: 1.5px solid #18a883; border-top: none; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+    .photo-slot { flex: 1; width: 100%; border-radius: 8px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; border: 2px dashed #e2e8f0; transition: all var(--transition); }
     .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
-    .report-footer { height: 25mm; padding: 0 15mm; display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #e5e7eb; background: linear-gradient(to bottom, #ffffff, #f8fafc); flex-shrink: 0; }
-    .tools-list { display: flex; flex-wrap: wrap; gap: 4px; font-size: 8pt; }
-    .tools-list span { background: #e6f7f1; color: #0d6b4f; border-radius: 12px; padding: 2px 8px; }
+    
+    /* Footer with Bottom Margin padding to prevent page break overflow */
+    .report-footer { height: 22mm; padding: 0 15mm; display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #e5e7eb; background: linear-gradient(to bottom, #ffffff, #f8fafc); flex-shrink: 0; margin-bottom: 5mm; }
+    
+    .tools-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; font-size: 7.5pt; }
+    .tools-list span { background: #e6f7f1; color: #0d6b4f; border-radius: 10px; padding: 1px 6px; }
+    
+    /* Camera & Modal stuff */
     #camera-app { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; flex-direction: column; font-family: 'Tajawal', sans-serif; }
     .cam-header { position: absolute; top: 0; left: 0; right: 0; height: 90px; background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent); display: flex; justify-content: space-between; align-items: flex-start; padding: 20px 24px; z-index: 40; }
     .cam-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.35); color: white; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); }
@@ -195,9 +218,9 @@
       <div class="lg:col-span-2 space-y-4">
         <div class="card">
           <div><label class="input-label">العنوان الرئيسي</label><input type="text" id="input-title" class="input-field font-bold" placeholder="مثال: تفعيل اليوم الوطني 94" oninput="syncTitleToReport()"></div>
-          <div class="mt-4"><label class="input-label">وصف النشاط</label><textarea id="general-desc" rows="4" class="input-field resize-none" placeholder="مثال: قمنا بتفعيل اليوم الوطني..." oninput="handleDescChange()"></textarea></div>
+          <div class="mt-4"><label class="input-label">وصف النشاط</label><textarea id="general-desc" rows="4" class="input-field resize-none" placeholder="مثال: قمنا بتفعيل اليوم الوطني ونفذنا مسابقات بحضور 50 طالب..." oninput="handleDescChange()"></textarea></div>
           <div class="flex gap-3 mt-4">
-            <button onclick="generateAll()" id="btn-generate" class="btn btn-primary flex-1"><span id="btn-text">توليد التقرير بالذكاء الاصطناعي</span><span id="btn-spinner" class="hidden" style="width:18px;height:18px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;"></span></button>
+            <button onclick="generateAll()" id="btn-generate" class="btn btn-primary flex-1"><span id="btn-text">توليد التقرير بالذكاء الاصطناعي</span></button>
             <button onclick="window.print()" class="btn btn-dark">تصدير PDF</button>
             <button onclick="exportAsImage()" class="btn btn-dark">صورة</button>
           </div>
@@ -207,7 +230,7 @@
           <div id="subtitle-blocks" class="space-y-3 mt-3"></div>
           <div class="flex gap-2 mt-3">
             <button onclick="addSubtitle()" class="btn btn-outline btn-sm text-xs">+ إضافة عنوان</button>
-            <button onclick="regenerateContent()" id="btn-regenerate" class="btn btn-primary btn-sm text-xs"><span id="btn-regen-text">إعادة توليد المحتوى</span><span id="btn-regen-spinner" class="hidden" style="width:16px;height:16px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;"></span></button>
+            <button onclick="regenerateContent()" id="btn-regenerate" class="btn btn-primary btn-sm text-xs"><span id="btn-regen-text">إعادة التوليد والتحديث</span></button>
           </div>
         </div>
         <div class="card">
@@ -221,7 +244,7 @@
       </div>
       <div class="space-y-4">
         <div class="card"><h3 class="card-header">البيانات الأساسية</h3><div class="space-y-2"><div><label class="input-label">المدرسة</label><input type="text" id="input-school" value="سهيل بن عمرو الثانوية" class="input-field text-sm font-bold text-primary" oninput="syncInfo()"></div><div><label class="input-label">مدير المدرسة</label><input type="text" id="input-director" value="فيصل العلياني" class="input-field text-sm" oninput="syncInfo()"></div><div class="grid grid-cols-2 gap-2"><div><label class="input-label">التاريخ</label><input type="text" id="input-date" class="input-field text-sm text-center" dir="ltr" oninput="syncInfo()"></div><div><label class="input-label">المجال</label><input type="text" id="input-domain" value="عام" class="input-field text-sm text-center" oninput="syncInfo()"></div></div><div><label class="input-label">المكان</label><input type="text" id="input-location" value="داخل المدرسة" class="input-field text-sm text-center" oninput="syncInfo()"></div></div></div>
-        <div class="card"><h3 class="card-header">مسمى المنفذ (التذييل)</h3><input type="text" id="input-executor" value="معلم" class="input-field text-sm" oninput="syncInfo()"><div class="flex flex-wrap gap-2 mt-2"><span class="tool-tag" onclick="setExecutor('معلم')">معلم</span><span class="tool-tag" onclick="setExecutor('وكيل')">وكيل</span><span class="tool-tag" onclick="setExecutor('موجه طلابي')">موجه طلابي</span><span class="tool-tag" onclick="setExecutor('رائد نشاط')">رائد نشاط</span></div></div>
+        <div class="card"><h3 class="card-header">مسمى المنفذ (التذييل)</h3><input type="text" id="input-executor" value="معلم" class="input-field text-sm" oninput="syncInfo()"><div class="flex flex-wrap gap-2 mt-2"><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('معلم')">معلم</span><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('وكيل')">وكيل</span><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('موجه طلابي')">موجه طلابي</span><span class="tool-tag text-xs bg-gray-100 p-1 rounded cursor-pointer hover:bg-gray-200" onclick="setExecutor('رائد نشاط')">رائد نشاط</span></div></div>
       </div>
     </div>
   </div>
@@ -234,11 +257,11 @@
     <div id="review-screen"><div class="review-image-area"><img id="review-img" src="" alt="معاينة"></div><div class="review-actions"><button class="review-action-btn retry" onclick="discardPhoto()">إعادة</button><button class="review-action-btn accept" onclick="acceptPhoto()">استخدام</button></div></div>
   </div>
 
-  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-box"><div class="spinner"></div><p class="font-bold text-primary">جاري توليد المحتوى بالذكاء الاصطناعي...</p></div></div>
+  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-box"><div class="spinner"></div><p class="font-bold text-primary">جاري صياغة التقرير بذكاء...</p></div></div>
 
   <div class="preview-wrapper" id="preview-wrapper">
     <div id="report-element" class="a4-page">
-      <div class="report-header"><div class="header-content"><div class="header-right"><p class="text-[12pt] font-bold leading-tight font-heading">المملكة العربية السعودية</p><p class="text-[11pt] font-bold leading-tight mt-1 font-heading">الإدارة العامة للتعليم بمنطقة عسير</p></div><div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[75px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div><div class="header-left"><div class="header-left-inner"><p class="text-[14pt] font-black leading-tight text-white font-heading">وزارة التعليم</p><p class="text-[11pt] font-bold leading-tight mt-1 text-accent font-heading" id="display-school">سهيل بن عمرو الثانوية</p></div></div></div></div>
+      <div class="report-header"><div class="header-content"><div class="header-right"><p class="text-[11pt] font-bold leading-tight font-heading">المملكة العربية السعودية</p><p class="text-[10pt] font-bold leading-tight mt-1 font-heading">الإدارة العامة للتعليم بمنطقة عسير</p></div><div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[65px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div><div class="header-left"><div class="header-left-inner"><p class="text-[12pt] font-black leading-tight text-white font-heading">وزارة التعليم</p><p class="text-[10pt] font-bold leading-tight mt-1 text-accent font-heading" id="display-school">سهيل بن عمرو الثانوية</p></div></div></div></div>
       <div class="title-badge-wrapper"><div class="title-badge" id="display-title">عنوان التقرير</div></div>
       <div class="info-bar-wrapper">
         <div class="info-bar">
@@ -250,26 +273,31 @@
       </div>
       <div class="main-content-area">
         <div id="template-teacher">
-          <div class="teacher-text-col" id="teacher-content"><p class="text-gray-400 text-center mt-10 text-sm">اكتب وصف النشاط ثم اضغط "توليد التقرير بالذكاء الاصطناعي"</p></div>
+          <div class="teacher-text-col" id="teacher-content">
+            <p class="text-gray-400 text-center mt-10 text-sm">اكتب وصف النشاط واضغط "توليد التقرير بالذكاء الاصطناعي"</p>
+          </div>
           <div class="teacher-evidence-col">
             <div class="evidence-header-bar teacher-style">شواهد التنفيذ</div>
-            <div class="evidence-container teacher-container" id="teacher-evidence"><div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 1</span></div><div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div></div>
+            <div class="evidence-container teacher-container" id="teacher-evidence">
+              <div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 1</span></div>
+              <div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="report-footer"><div class="text-center w-1/3"><p class="font-heading text-[11pt] font-bold text-primary mb-4">المنفذ</p><p id="display-footer-executor" class="font-body text-[12pt] font-medium text-gray-700">معلم</p></div><div class="text-center w-1/3 flex justify-center"><div id="qrcode" class="border p-1 bg-white rounded"></div></div><div class="text-center w-1/3"><p class="font-heading text-[11pt] font-bold text-primary mb-4">مدير المدرسة</p><p id="display-director" class="font-heading text-[13pt] font-bold text-secondary">فيصل العلياني</p></div></div>
+      <div class="report-footer">
+        <div class="text-center w-1/3"><p class="font-heading text-[10pt] font-bold text-primary mb-2">المنفذ</p><p id="display-footer-executor" class="font-body text-[11pt] font-medium text-gray-700">معلم</p></div>
+        <div class="text-center w-1/3 flex justify-center"><div id="qrcode" class="border p-1 bg-white rounded"></div></div>
+        <div class="text-center w-1/3"><p class="font-heading text-[10pt] font-bold text-primary mb-2">مدير المدرسة</p><p id="display-director" class="font-heading text-[11pt] font-bold text-secondary">فيصل العلياني</p></div>
+      </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // --- بيانات الاتصال الآمنة (مشفرة) ---
-      const _0x1 = ['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'];
-      const API_KEY = _0x1[0];
-      const API_URL = "https://api.groq.com/openai/v1/chat/completions";
-      const AI_MODEL = "llama-3.3-70b-versatile";
-      // ---------------------------------
-
+      const apiKey = ""; 
+      const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+      
       const TOOLS_LIST = [
         'سبورة', 'قلم', 'لابتوب', 'جهاز كمبيوتر', 'أوراق عمل', 'عرض تقديمي', 'فيديو تعليمي',
         'مسجل', 'سماعات', 'جهاز عرض', 'بروجكتر', 'سبورة تفاعلية', 'بطاقات', 'مجسمات'
@@ -281,6 +309,7 @@
         generalDesc: '', aiGeneratedContent: null, selectedTools: new Set()
       };
       let draggedIndex = null;
+      window.reportChartInstance = null; // متغير لضمان عدم تكرار رسم الـ Chart
 
       window.addEventListener('load', () => {
         document.getElementById('input-date').value = new Date().toLocaleDateString('ar-SA');
@@ -321,7 +350,7 @@
       window.generateQR = function() {
         const link = document.getElementById('qr-link')?.value || 'https://moe.gov.sa';
         const qr = document.getElementById('qrcode');
-        if(qr){ qr.innerHTML = ''; new QRCode(qr, { text: link, width: 70, height: 70, colorDark: '#1a365d', colorLight: '#ffffff' }); }
+        if(qr){ qr.innerHTML = ''; new QRCode(qr, { text: link, width: 60, height: 60, colorDark: '#1a365d', colorLight: '#ffffff' }); }
       };
       window.exportAsImage = function() {
         html2canvas(document.getElementById('report-element'), { scale: 2 }).then(canvas => {
@@ -353,64 +382,114 @@
       window.handleDescChange = function() { };
       window.setExecutor = function(title){ document.getElementById('input-executor').value=title; syncInfo(); };
 
-      async function callAI(mainTitle, generalDesc, subtitles) {
-        const systemPrompt = "أنت مساعد متخصص في كتابة التقارير... أعد الرد بصيغة JSON.";
-        const userMsg = `العنوان الرئيسي: "${mainTitle}"\nالوصف: "${generalDesc}"\nالعناوين: ${subtitles.map(s=>s.title).join('، ')}`;
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
-          body: JSON.stringify({
-            model: AI_MODEL,
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: userMsg }
-            ],
-            temperature: 0.7,
-            max_tokens: 2048,
-            response_format: { type: 'json_object' }
-          })
-        });
-        if (!response.ok) {
-          if (response.status === 401) throw new Error("مفتاح API غير صالح. تأكد من المفتاح.");
-          else throw new Error(`خطأ ${response.status}`);
+      // --- دوال الاتصال بالذكاء الاصطناعي مع قيود صارمة ---
+      async function callAI(mainTitle, generalDesc, subtitles, descriptions) {
+        let subContext = subtitles.map((t, i) => `- ${t} (${descriptions[i] || 'بدون وصف إضافي'})`).join('\n');
+        
+        const systemPrompt = `أنت مساعد خبير في صياغة تقارير مدرسية من صفحة واحدة، قصيرة جداً، ومختصرة بصرامة لتجنب تجاوز مساحة الصفحة.
+الشرط الأساسي: إرجاع الرد بصيغة JSON حصراً.
+يجب أن يحتوي الـ JSON على كائن "sections"، وداخله المفاتيح التالية حصراً:
+${subtitles.map(s=>`"${s}"`).join(', ')}
+
+قواعد صارمة جداً لتنسيق محتوى كل قسم:
+1. إذا كان العنوان يحتوي على "مقدمة": النص يجب أن يكون سلسلة نصية (String) لا تتجاوز 12 كلمة بأي حال.
+2. إذا كان العنوان يحتوي على "أهداف" أو "أثر": القيمة يجب أن تكون مصفوفة (Array of Strings) تتكون من 3 نقاط فقط. كل نقطة يجب ألا تتجاوز 5 كلمات كحد أقصى.
+3. إذا كان العنوان يحتوي على "تنفيذ" أو "ما تم": القيمة يجب أن تكون كائن جدول (Table Object) مختصر جداً.
+   صيغته: {"type": "table", "headers": ["الخطوة", "الوصف المختصر"], "rows": [["1", "كلمتين"], ["2", "كلمتين"]]} (الصفوف 3 كحد أقصى).
+4. إذا كان العنوان يحتوي على "رسم" أو "إحصائيات": القيمة يجب أن تكون كائن رسم بياني.
+   صيغته: {"type": "chart", "labels": ["ممتاز", "جيد", "مقبول"], "values": [70, 20, 10]}.
+5. أي عنوان آخر: نص قصير (String) لا يتجاوز 10 كلمات.
+
+الاختصار هو الأهم! تذكر أن المساحة ضيقة جداً ولا يوجد شريط تمرير.`;
+
+        const userMsg = `عنوان التقرير: "${mainTitle}"\nالوصف العام للنشاط: "${generalDesc}"\n\nالعناوين المطلوبة:\n${subContext}`;
+
+        const payload = {
+          contents: [{ parts: [{ text: userMsg }] }],
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          generationConfig: { responseMimeType: "application/json" }
+        };
+
+        const maxRetries = 5;
+        const delays = [1000, 2000, 4000, 8000, 16000];
+
+        for (let attempt = 0; attempt <= maxRetries; attempt++) {
+          try {
+            const response = await fetch(API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            const data = await response.json();
+            const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!textContent) throw new Error("لا يوجد محتوى في الرد");
+
+            return JSON.parse(textContent);
+          } catch (error) {
+            if (attempt === maxRetries) throw error;
+            await new Promise(resolve => setTimeout(resolve, delays[attempt]));
+          }
         }
-        const data = await response.json();
-        const text = data.choices?.[0]?.message?.content || '';
-        return JSON.parse(text.replace(/```json|```/g, '').trim());
       }
 
-      window.generateAll = async function() {
-        const title = document.getElementById('input-title')?.value?.trim() || '';
+      window.generateAll = function() {
         const desc = document.getElementById('general-desc')?.value?.trim() || '';
-        if(!desc) return alert('الرجاء كتابة وصف النشاط');
+        if(!desc) return alert('الرجاء كتابة وصف النشاط للبدء');
         state.generalDesc = desc;
-        const subtitles = [{title:'مقدمة',desc:'تمهيد'},{title:'الأهداف',desc:'أهداف'},{title:'ما تم تنفيذه',desc:'تنفيذ'},{title:'الأثر',desc:'نتائج'}];
-        state.subtitles = subtitles.map(s=>s.title);
-        state.descriptions = {}; subtitles.forEach((s,i)=>{ state.descriptions[i]=s.desc; });
-        renderSubtitleBlocks();
+
+        // تهيئة العناوين الافتراضية المدمجة مع الرسم البياني
+        if (state.subtitles.length === 0) {
+          const initSubs = [
+            {title:'المقدمة',desc:'تمهيد مبسط للنشاط'},
+            {title:'الأهداف',desc:'أهداف النشاط'},
+            {title:'ما تم تنفيذه',desc:'خطوات التنفيذ بجدول'},
+            {title:'الأثر',desc:'النتائج والأثر الملموس'},
+            {title:'رسم بياني للتفاعل',desc:'إحصائية نسبة الإنجاز والتفاعل'}
+          ];
+          state.subtitles = initSubs.map(s=>s.title);
+          state.descriptions = {};
+          initSubs.forEach((s,i)=>{ state.descriptions[i]=s.desc; });
+          renderSubtitleBlocks();
+        }
+
         document.getElementById('subtitles-area').classList.remove('hidden');
+        processGeneration();
+      };
+
+      window.regenerateContent = function() {
+        if(!state.generalDesc) return alert('الرجاء كتابة وصف النشاط أولاً');
+        processGeneration();
+      };
+
+      async function processGeneration() {
+        const title = document.getElementById('input-title')?.value?.trim() || 'تقرير نشاط';
         showLoading();
         try {
-          const ai = await callAI(title, desc, subtitles);
-          state.aiGeneratedContent = ai;
-          renderAIContent(ai);
+          const aiData = await callAI(title, state.generalDesc, state.subtitles, state.descriptions);
+          state.aiGeneratedContent = aiData;
+          renderAIContent(aiData);
           syncInfo(); syncTitleToReport(); generateQR(); renderEvidence(); updateToolsDisplay();
         } catch(e) {
-          alert("تعذر الاتصال: " + e.message);
-          renderLocalContent(null);
-        } finally { hideLoading(); }
-      };
+          console.error(e);
+          alert("حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. الرجاء المحاولة مرة أخرى.");
+          renderLocalContent();
+        } finally {
+          hideLoading();
+        }
+      }
 
       function renderSubtitleBlocks() {
         document.getElementById('subtitle-blocks').innerHTML = state.subtitles.map((t,i)=>`
-          <div draggable="true" ondragstart="dragStart(event,${i})" ondragover="event.preventDefault()" ondrop="drop(event,${i})" class="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border">
-            <div class="flex gap-2"><input type="text" value="${t}" oninput="updateSubtitle(${i},this.value)" class="input-field text-sm flex-1"><button onclick="removeSubtitle(${i})" class="text-red-400 font-bold">×</button></div>
-            <textarea rows="2" class="input-field text-xs" oninput="updateDescription(${i},this.value)">${state.descriptions[i]||''}</textarea>
+          <div draggable="true" ondragstart="dragStart(event,${i})" ondragover="event.preventDefault()" ondrop="drop(event,${i})" class="flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border cursor-move">
+            <div class="flex gap-2"><input type="text" value="${t}" oninput="updateSubtitle(${i},this.value)" class="input-field text-sm flex-1"><button onclick="removeSubtitle(${i})" class="text-red-400 font-bold px-2">✕</button></div>
+            <textarea rows="1" class="input-field text-xs resize-none" placeholder="ملاحظات للذكاء الاصطناعي حول هذا القسم..." oninput="updateDescription(${i},this.value)">${state.descriptions[i]||''}</textarea>
           </div>`).join('');
       }
       window.updateSubtitle = (i,v)=> { state.subtitles[i]=v.trim(); };
       window.updateDescription = (i,v)=> { state.descriptions[i]=v; };
-      window.addSubtitle = ()=> { if(state.subtitles.length<4){ state.subtitles.push(''); renderSubtitleBlocks(); } };
+      window.addSubtitle = ()=> { if(state.subtitles.length<5){ state.subtitles.push(''); renderSubtitleBlocks(); } else { alert('الحد الأقصى 5 عناوين فرعية'); } };
       window.removeSubtitle = (i)=> { state.subtitles.splice(i,1); renderSubtitleBlocks(); };
       window.dragStart = (e,i)=> { draggedIndex=i; };
       window.drop = (e,target)=> {
@@ -423,18 +502,63 @@
       };
 
       function renderAIContent(ai) {
+        if(window.reportChartInstance instanceof Chart) { window.reportChartInstance.destroy(); window.reportChartInstance = null; }
+        
         const sections = ai?.sections || {};
         let html = '';
+        let hasChart = false;
+        let chartData = null;
+
         state.subtitles.forEach((title, idx)=>{
           const content = sections[title];
-          if(!content) { html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><p class="text-xs">لا يوجد</p></div>`; return; }
-          if(title==='مقدمة' && typeof content==='string') html+=`<div class="intro-section"><span class="intro-heading">مقدمة</span><span class="intro-text">${content}</span></div>`;
-          else if(Array.isArray(content)) html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><div class="bullet-list">${content.map(c=>`<div class="bullet-item">${c}</div>`).join('')}</div></div>`;
-          else if(content.headers) html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><table class="report-table"><thead><tr>${content.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${content.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+          if(!content) { html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><p class="text-xs text-gray-500">لا يوجد محتوى</p></div>`; return; }
+          
+          if(title.includes('مقدمة') && typeof content === 'string') {
+            html+=`<div class="intro-section"><span class="intro-heading">${title}</span><span class="intro-text">${content}</span></div>`;
+          } 
+          else if(content.type === 'table' || (content.headers && content.rows)) {
+            html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><table class="report-table"><thead><tr>${content.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${content.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+          }
+          else if(content.type === 'chart') {
+            html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><div class="chart-container"><canvas id="ai-chart-canvas"></canvas></div></div>`;
+            hasChart = true; chartData = content;
+          }
+          else if(Array.isArray(content)) {
+            html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><ul class="bullet-list">${content.map(c=>`<li class="bullet-item">${c}</li>`).join('')}</ul></div>`;
+          }
+          else if(typeof content === 'string') {
+             html+=`<div class="content-card"><h3 class="section-heading">${title}</h3><p class="intro-text">${content}</p></div>`;
+          }
         });
+        
         document.getElementById('teacher-content').innerHTML = html;
+
+        // رسم الـ Chart بعد تحديث الـ DOM
+        if(hasChart && chartData) {
+          setTimeout(() => {
+            const ctx = document.getElementById('ai-chart-canvas');
+            if(ctx) {
+              window.reportChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                  labels: chartData.labels || ['1', '2'],
+                  datasets: [{
+                    data: chartData.values || [50, 50],
+                    backgroundColor: ['#18a883', '#fde047', '#1a365d', '#cbd5e1'],
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  responsive: true, maintainAspectRatio: false,
+                  plugins: { legend: { position: 'left', labels: { font: { family: 'Tajawal', size: 9 }, boxWidth: 10 } } },
+                  layout: { padding: 0 }
+                }
+              });
+            }
+          }, 150);
+        }
       }
-      function renderLocalContent() { document.getElementById('teacher-content').innerHTML = '<p class="text-gray-400 text-center mt-10">تعذر التوليد. تحقق من المفتاح.</p>'; }
+      function renderLocalContent() { document.getElementById('teacher-content').innerHTML = '<p class="text-red-500 text-center mt-10 text-sm">تعذر التوليد. تأكد من اتصال الإنترنت وحاول مجدداً.</p>'; }
       function renderEvidence() {
         const c = document.getElementById('teacher-evidence');
         c.innerHTML = state.images.length ? state.images.map(s=>`<div class="photo-slot"><img src="${s}" class="w-full h-full object-cover"></div>`).join('') + (state.images.length===1?'<div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>':'') : '<div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 1</span></div><div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>';
@@ -446,4 +570,3 @@
   </script>
 </body>
 </html>
-```
