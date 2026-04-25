@@ -40,177 +40,154 @@
       --text-light: #64748b;
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
       --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
       --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.16);
-      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition: 0.3s ease;
     }
     * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     
-    /* منع التأرجح الجانبي بصرامة */
     html, body {
-      width: 100%;
-      max-width: 100vw;
-      overflow-x: hidden !important; 
-      position: relative;
+      width: 100%; max-width: 100vw; overflow-x: hidden !important; position: relative;
     }
 
     body {
       background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
       background-attachment: fixed;
       margin: 0; padding: 0; font-family: 'Tajawal', sans-serif;
-      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh; display: flex; flex-direction: column; align-items: center;
     }
     
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 100px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     
+    /* Toast Notifications */
+    #toast-container {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100000;
+      display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+    }
+    .toast {
+      background: rgba(26, 54, 93, 0.95); color: white; padding: 12px 24px; border-radius: 8px;
+      font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 14px; text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); backdrop-filter: blur(10px);
+      animation: slideDown 0.3s ease forwards;
+    }
+    .toast.error { background: rgba(220, 38, 38, 0.95); border-right: 4px solid #f87171; }
+    .toast.success { background: rgba(24, 168, 131, 0.95); border-right: 4px solid #6ee7b7; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
     .control-panel {
-      position: relative; z-index: 50;
-      width: calc(100% - 24px); /* ضمان عدم تجاوز الشاشة في الجوال */
+      position: relative; z-index: 50; width: calc(100% - 24px); max-width: 900px;
       background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: var(--shadow-xl); transition: all var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: var(--shadow-xl);
     }
     .input-field {
-      width: 100%; border: 2px solid var(--border); border-radius: 0.5rem;
-      padding: 0.5rem 0.75rem; font-size: 0.9rem; font-family: 'Tajawal', sans-serif;
-      outline: none; transition: all var(--transition); background: white; color: var(--text);
+      width: 100%; border: 2px solid var(--border); border-radius: 6px;
+      padding: 8px 12px; font-size: 14px; font-family: 'Tajawal', sans-serif; outline: none; background: white; color: var(--text);
     }
-    .input-field:hover { border-color: #cbd5e1; }
     .input-field:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(24, 168, 131, 0.1); }
-    .input-label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-light); margin-bottom: 0.25rem; font-family: 'Cairo', sans-serif; }
+    .input-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-light); margin-bottom: 4px; font-family: 'Cairo', sans-serif; }
     .btn {
-      position: relative; overflow: hidden; font-family: 'Cairo', sans-serif; font-weight: 700;
-      border: none; cursor: pointer; transition: all var(--transition); border-radius: 0.5rem;
-      padding: 0.6rem 1rem; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; white-space: nowrap;
+      font-family: 'Cairo', sans-serif; font-weight: 700; border: none; cursor: pointer; border-radius: 6px;
+      padding: 10px 16px; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s;
     }
-    .btn-primary { background: linear-gradient(135deg, #18a883, #0d9668); color: white; box-shadow: 0 4px 10px rgba(24, 168, 131, 0.2); }
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-dark { background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; box-shadow: 0 4px 10px rgba(26, 54, 93, 0.2); }
-    .btn-dark:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, #18a883, #0d9668); color: white; }
+    .btn-dark { background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; }
     .btn-outline { background: white; border: 1.5px solid var(--border); color: #475569; }
-    .btn-outline:hover { border-color: #94a3b8; background: #f8fafc; }
-    .btn-sm { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
-    .card { background: white; border-radius: 0.75rem; border: 1px solid var(--border); padding: 1rem; box-shadow: var(--shadow-sm); }
-    .card-header { font-family: 'Cairo', sans-serif; font-weight: 700; color: var(--primary); margin-bottom: 0.75rem; font-size: 0.95rem; }
+    .btn:active { transform: scale(0.98); }
     
-    /* حل مشكلة التأرجح لمعاينة الورقة */
+    .card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 16px; box-shadow: var(--shadow-sm); }
+    .card-header { font-family: 'Cairo', sans-serif; font-weight: 700; color: var(--primary); margin-bottom: 12px; font-size: 15px; }
+    
+    /* --- A4 Page Container (Pixel Perfect Design for Shortcuts/Extensions) --- */
     .preview-wrapper { 
-      width: 100%; 
-      max-width: 100vw;
-      overflow-x: auto; /* السماح بالتمرير داخل هذا الصندوق فقط */
-      -webkit-overflow-scrolling: touch;
-      display: flex; 
-      justify-content: center; 
-      margin-top: 24px; 
-      margin-bottom: 48px; 
-      position: relative; 
-      z-index: 10; 
-      padding: 0 10px; /* مساحة صغيرة من الحواف */
+      width: 100%; max-width: 100vw; display: flex; justify-content: center; 
+      margin-top: 24px; margin-bottom: 48px; position: relative; z-index: 10;
+      /* الارتفاع سيتم التحكم فيه برمجياً ليتناسب مع التصغير */
+      transform-origin: top center;
     }
     
-    /* --- A4 Page Container (Strict Limits) --- */
-    @page { size: A4 portrait; margin: 0; }
     .a4-page {
-      width: 210mm;
-      height: 297mm;
-      max-height: 297mm;
+      /* استخدام البيكسل بدلاً من mm لضمان التوافق التام مع أدوات الـ Shortcuts */
+      width: 794px;
+      height: 1123px;
       background: white;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
       position: relative;
-      overflow: hidden; /* يمنع أي خروج للمحتوى */
+      overflow: hidden; /* يمنع خروج المحتوى نهائياً */
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      padding: 0; margin: 0;
       box-sizing: border-box;
+      transform-origin: top center;
     }
     
     .report-header {
-      position: relative; height: 38mm; width: 100%; flex-shrink: 0;
+      height: 140px; width: 100%; flex-shrink: 0; position: relative;
       background: linear-gradient(135deg, #1a365d 0%, #0f2440 40%, #18a883 100%);
-      border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; color: white; overflow: hidden;
+      border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; color: white;
     }
-    .header-content { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 15mm; }
+    .header-content { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 50px; }
     .header-right, .header-left { width: 35%; }
     .header-left { text-align: left; }
     .header-left-inner { direction: rtl; text-align: right; display: inline-block; }
     .header-center { width: 30%; display: flex; justify-content: center; }
     
-    .title-badge-wrapper { position: relative; margin-top: -6mm; z-index: 20; text-align: center; padding: 0 15mm; flex-shrink: 0; }
-    .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 6px 35px; border-radius: 999px; font-family: 'Cairo', sans-serif; font-size: 13pt; font-weight: 900; border: 3px solid white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); max-width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .title-badge-wrapper { position: relative; margin-top: -24px; z-index: 20; text-align: center; padding: 0 50px; flex-shrink: 0; }
+    .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 8px 45px; border-radius: 99px; font-family: 'Cairo', sans-serif; font-size: 18px; font-weight: 900; border: 4px solid white; max-width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     
-    .info-bar-wrapper { padding: 0 15mm; margin-top: 3mm; flex-shrink: 0; }
-    .info-bar { display: grid; grid-template-columns: repeat(4, 1fr); background: white; border-top: 1.5px solid #d1d5db; border-bottom: 1.5px solid #d1d5db; padding: 5px 0; }
-    .info-item { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #d1d5db; padding: 0 4px; }
+    .info-bar-wrapper { padding: 0 50px; margin-top: 15px; flex-shrink: 0; }
+    .info-bar { display: grid; grid-template-columns: repeat(4, 1fr); background: white; border-top: 2px solid #e2e8f0; border-bottom: 2px solid #e2e8f0; padding: 8px 0; }
+    .info-item { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #e2e8f0; padding: 0 8px; }
     .info-item:last-child { border-left: none; }
-    .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 8.5pt; }
-    .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 9pt; text-align: center; line-height: 1.2; }
+    .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 12px; }
+    .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 13px; text-align: center; line-height: 1.3; }
     
-    /* --- Main Content Area (Flex to fill, strict overflow) --- */
     .main-content-area {
-      flex: 1 1 auto; /* يأخذ المساحة المتبقية فقط */
-      padding: 4mm 15mm;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden; /* لا أشرطة تمرير */
-      min-height: 0; /* ضروري لعمل الـ Flexbox بشكل صحيح */
+      flex: 1 1 auto; padding: 15px 50px; display: flex; flex-direction: column; overflow: hidden; min-height: 0;
     }
     
-    #template-teacher { display: flex; gap: 10px; height: 100%; width: 100%; overflow: hidden; }
-    
-    .teacher-text-col { width: 62%; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+    #template-teacher { display: flex; gap: 15px; height: 100%; width: 100%; overflow: hidden; }
+    .teacher-text-col { width: 62%; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
     .teacher-evidence-col { width: 38%; display: flex; flex-direction: column; overflow: hidden; }
     
-    /* --- Content Components --- */
-    .content-card { background: white; border: 1.5px solid #eab308; border-radius: 8px; padding: 6px 8px; box-shadow: var(--shadow-sm); }
-    .section-heading { font-family: 'Cairo', sans-serif; font-size: 10.5pt; font-weight: 900; color: var(--primary); border-bottom: 2px solid #eab308; display: inline-block; padding-bottom: 1px; margin-bottom: 3px; }
+    /* Content Styling (Pixel based) */
+    .content-card { background: white; border: 2px solid #eab308; border-radius: 10px; padding: 10px; box-shadow: var(--shadow-sm); }
+    .section-heading { font-family: 'Cairo', sans-serif; font-size: 15px; font-weight: 900; color: var(--primary); border-bottom: 2px solid #eab308; display: inline-block; padding-bottom: 2px; margin-bottom: 6px; }
     
-    .intro-section { margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1.5px dashed var(--secondary); }
-    .intro-heading { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 10.5pt; display: block; margin-bottom: 2px; }
-    .intro-text { color: #1e293b; font-weight: 500; font-size: 9pt; line-height: 1.4; text-align: justify; }
+    .intro-section { margin-bottom: 6px; padding-bottom: 6px; border-bottom: 2px dashed var(--secondary); }
+    .intro-heading { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 15px; display: block; margin-bottom: 4px; }
+    .intro-text { color: #1e293b; font-weight: 500; font-size: 13px; line-height: 1.5; text-align: justify; }
     
-    .bullet-list { list-style: none; padding: 0; margin: 2px 0; }
-    .bullet-item { position: relative; padding-right: 12px; margin-bottom: 2px; font-size: 9pt; color: #1e293b; line-height: 1.3; font-weight: 500; }
-    .bullet-item::before { content: ''; position: absolute; right: 0; top: 6px; width: 4px; height: 4px; background: var(--secondary); border-radius: 50%; }
+    .bullet-list { list-style: none; padding: 0; margin: 4px 0; }
+    .bullet-item { position: relative; padding-right: 16px; margin-bottom: 4px; font-size: 13px; color: #1e293b; line-height: 1.4; font-weight: 500; }
+    .bullet-item::before { content: ''; position: absolute; right: 0; top: 7px; width: 6px; height: 6px; background: var(--secondary); border-radius: 50%; }
     
-    .report-table { width: 100%; border-collapse: collapse; font-size: 8pt; border-radius: 4px; overflow: hidden; }
-    .report-table th { color: white; padding: 3px; border: 1px solid #0d9668; text-align: center; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #18a883, #0d9668); }
-    .report-table td { padding: 3px; border: 1px solid #e2e8f0; color: #1e293b; text-align: center; font-weight: 500; }
+    .report-table { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: 6px; overflow: hidden; }
+    .report-table th { color: white; padding: 5px; border: 1px solid #0d9668; text-align: center; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #18a883, #0d9668); }
+    .report-table td { padding: 5px; border: 1px solid #e2e8f0; color: #1e293b; text-align: center; font-weight: 500; }
     .report-table tbody tr:nth-child(even) td { background: #f8fafc; }
     
-    .chart-container { height: 90px; width: 100%; position: relative; margin-top: 2px; }
+    .chart-container { height: 130px; width: 100%; position: relative; margin-top: 4px; }
 
-    /* Evidence Styling */
-    .evidence-header-bar { color: white; font-family: 'Cairo', sans-serif; font-size: 10pt; font-weight: 700; text-align: center; padding: 3px; border-top-left-radius: 8px; border-top-right-radius: 8px; background: linear-gradient(135deg, #18a883, #0d9668); flex-shrink: 0; }
-    .evidence-container { flex: 1; border: 1.5px solid #18a883; border-top: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; padding: 6px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
-    .photo-slot { flex: 1; width: 100%; border-radius: 6px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; border: 1.5px dashed #cbd5e1; min-height: 0; /* يسمح بالتصغير */ }
+    .evidence-header-bar { color: white; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700; text-align: center; padding: 6px; border-top-left-radius: 10px; border-top-right-radius: 10px; background: linear-gradient(135deg, #18a883, #0d9668); flex-shrink: 0; }
+    .evidence-container { flex: 1; border: 2px solid #18a883; border-top: none; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+    .photo-slot { flex: 1; width: 100%; border-radius: 8px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; border: 2px dashed #cbd5e1; min-height: 0; }
     .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
     
-    /* --- Footer (Strict margins to prevent page break) --- */
     .report-footer {
-      height: 20mm;
-      padding: 0 15mm;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1.5px solid #e5e7eb;
-      background: linear-gradient(to bottom, #ffffff, #f8fafc);
-      flex-shrink: 0; /* يمنع انضغاط التذييل */
-      margin-bottom: 3mm; /* هامش أمان سفلي مهم جداً للطباعة */
+      height: 80px; padding: 0 50px; display: flex; justify-content: space-between; align-items: center;
+      border-top: 2px solid #e5e7eb; background: linear-gradient(to bottom, #ffffff, #f8fafc); flex-shrink: 0;
+      margin-bottom: 20px; /* هامش الأمان */
     }
     
-    /* تعديل عرض الأدوات بحيث تستوعب عدداً كبيراً دون تخريب التخطيط */
-    .tools-list { display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 2px; height: 100%; overflow: hidden; }
-    .tools-list span { background: #e6f7f1; color: #0d6b4f; border-radius: 4px; padding: 1px 4px; font-size: 7.5pt; display: inline-block; white-space: nowrap; }
+    .tools-list { display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 3px; height: 100%; overflow: hidden; }
+    .tools-list span { background: #e6f7f1; color: #0d6b4f; border-radius: 6px; padding: 2px 6px; font-size: 11px; display: inline-block; white-space: nowrap; }
     
-    /* Camera & Modal stuff */
+    /* Camera & Modal */
     #camera-app { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; flex-direction: column; }
     .cam-header { position: absolute; top: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 20px; z-index: 40; }
-    .cam-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4); color: white; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .cam-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .cam-viewfinder { flex-grow: 1; position: relative; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; }
     #cam-video { width: 100%; height: 100%; object-fit: cover; }
     .cam-controls { background: #000; padding-bottom: 20px; display: flex; flex-direction: column; z-index: 40; }
@@ -224,75 +201,80 @@
     .review-action-btn { font-family: 'Tajawal', sans-serif; font-weight: 700; border: none; cursor: pointer; padding: 10px 30px; border-radius: 20px; color: white; background: #444; }
     .review-action-btn.accept { background: linear-gradient(135deg, #18a883, #0d9668); }
     
-    .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
-    .loading-box { background: white; border-radius: 1rem; padding: 2rem; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-    .spinner { width: 36px; height: 36px; border: 4px solid #e2e8f0; border-top-color: var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
+    .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+    .loading-box { background: white; border-radius: 16px; padding: 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* --- Strict Print Rules --- */
+    /* --- Strict Print Rules for Shortcuts and Browsers --- */
     @media print {
-      html, body { width: 210mm; height: 297mm; margin: 0; padding: 0; background: white; overflow: hidden !important; }
-      .no-print, #control-panel, #camera-app, .loading-overlay { display: none !important; }
-      .preview-wrapper { margin: 0; padding: 0; transform: none; display: block; overflow: hidden; }
-      .a4-page { box-shadow: none; border: none; border-radius: 0; width: 210mm; height: 297mm; max-height: 297mm; page-break-after: avoid; page-break-inside: avoid; }
+      @page { size: A4 portrait; margin: 0; }
+      html, body { width: 794px !important; height: 1123px !important; margin: 0 !important; padding: 0 !important; background: white; overflow: hidden !important; }
+      .no-print, #control-panel, #camera-app, .loading-overlay, #toast-container { display: none !important; }
+      .preview-wrapper { margin: 0 !important; padding: 0 !important; width: 794px !important; height: 1123px !important; transform: none !important; display: block !important; overflow: hidden !important; }
+      .a4-page { width: 794px !important; height: 1123px !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; transform: none !important; margin: 0 !important; }
     }
   </style>
 </head>
 <body>
+  
+  <!-- حاوية الإشعارات (Toasts) -->
+  <div id="toast-container"></div>
+
   <!-- لوحة التحكم (مخفية عند الطباعة) -->
-  <div id="control-panel" class="no-print w-full max-w-4xl control-panel rounded-2xl p-5 mx-auto mb-6 mt-4">
+  <div id="control-panel" class="no-print control-panel rounded-2xl p-5 mx-auto mb-6 mt-4">
     <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
       <div>
         <h2 class="text-xl font-black text-primary" style="font-family:Cairo">منصة التقارير الذكية</h2>
-        <p class="text-xs text-gray-500 mt-0.5">نظام متكامل لتوليد التقارير في صفحة واحدة</p>
+        <p class="text-xs text-gray-500 mt-1">نظام متكامل لتوليد التقارير في صفحة واحدة</p>
       </div>
-      <button onclick="toggleSettings()" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 transition">
-        ⚙️ إعدادات API
+      <button onclick="toggleSettings()" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg font-bold flex items-center gap-1 transition">
+        ⚙️ الإعدادات (مفتاح API)
       </button>
     </div>
 
     <!-- قسم الإعدادات (المفتاح) -->
-    <div id="settings-section" class="hidden bg-blue-50 border border-blue-100 rounded-lg p-4 mb-4">
+    <div id="settings-section" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
       <label class="input-label text-blue-800">مفتاح الذكاء الاصطناعي (Gemini API Key)</label>
-      <p class="text-[10px] text-blue-600 mb-2">لضمان عمل النظام بعد رفعه على GitHub، يجب وضع مفتاحك الخاص. يتم حفظه في متصفحك فقط.</p>
-      <input type="password" id="api-key-input" class="input-field text-sm" placeholder="أدخل مفتاح Gemini هنا (AIzaSy...)" onchange="saveApiKey(this.value)">
-      <div class="mt-2 text-[10px]">
-        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 underline font-bold">احصل على مفتاح مجاني من هنا</a>
+      <p class="text-xs text-blue-600 mb-3">لكي يعمل النظام على الاستضافات الخارجية (مثل GitHub)، يجب وضع مفتاحك الخاص. (يُحفظ في جهازك فقط).</p>
+      <input type="password" id="api-key-input" class="input-field" placeholder="أدخل مفتاح Gemini هنا (AIzaSy...)" onchange="saveApiKey(this.value)">
+      <div class="mt-2 text-xs">
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 underline font-bold">للحصول على مفتاح مجاني من Google، اضغط هنا</a>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="lg:col-span-2 space-y-3">
-        <div class="card p-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div class="lg:col-span-2 space-y-4">
+        <div class="card">
           <div><label class="input-label">العنوان الرئيسي</label><input type="text" id="input-title" class="input-field font-bold" placeholder="مثال: تفعيل اليوم الوطني 94" oninput="syncTitleToReport()"></div>
-          <div class="mt-3"><label class="input-label">وصف النشاط مختصر</label><textarea id="general-desc" rows="3" class="input-field resize-none text-sm" placeholder="مثال: قمنا بتفعيل اليوم الوطني بمسابقات لـ 50 طالب..." oninput="handleDescChange()"></textarea></div>
-          <div class="flex flex-wrap gap-2 mt-3">
+          <div class="mt-3"><label class="input-label">وصف النشاط مختصر</label><textarea id="general-desc" rows="3" class="input-field resize-none" placeholder="مثال: قمنا بتفعيل اليوم الوطني بمسابقات لـ 50 طالب..." oninput="handleDescChange()"></textarea></div>
+          <div class="flex flex-wrap gap-2 mt-4">
             <button onclick="generateAll()" class="btn btn-primary flex-1 min-w-[200px]">✨ توليد التقرير</button>
-            <button onclick="window.print()" class="btn btn-dark">طباعة PDF</button>
-            <button onclick="exportAsImage()" class="btn btn-outline">صورة</button>
+            <button onclick="window.print()" class="btn btn-dark">طباعة / PDF</button>
+            <button onclick="exportAsImage()" class="btn btn-outline">حفظ صورة</button>
           </div>
         </div>
         
-        <div id="subtitles-area" class="card p-4 hidden">
-          <div class="flex justify-between items-center mb-2"><h3 class="card-header mb-0">الهيكل (عناوين فرعية)</h3><button onclick="regenerateContent()" class="btn btn-primary btn-sm text-[10px]">🔄 إعادة توليد</button></div>
+        <div id="subtitles-area" class="card hidden">
+          <div class="flex justify-between items-center mb-3"><h3 class="card-header mb-0">الهيكل (عناوين فرعية)</h3><button onclick="regenerateContent()" class="btn btn-primary btn-sm text-xs">🔄 تحديث المحتوى</button></div>
           <div id="subtitle-blocks" class="space-y-2"></div>
         </div>
 
-        <div class="card p-4">
-          <div class="flex justify-between items-center mb-2"><span class="font-bold text-sm text-primary">شواهد التنفيذ (صورتين كحد أقصى)</span><div class="flex gap-1"><button onclick="openCamera()" class="btn btn-dark btn-sm text-xs">📷 كاميرا</button><label class="btn btn-outline btn-sm text-xs cursor-pointer">📁 رفع<input type="file" id="input-images" accept="image/*" multiple class="hidden" onchange="handleFiles(this)"></label></div></div>
+        <div class="card">
+          <div class="flex justify-between items-center"><span class="font-bold text-sm text-primary">شواهد التنفيذ (صورتين كحد أقصى)</span><div class="flex gap-2"><button onclick="openCamera()" class="btn btn-dark btn-sm text-xs">📷 كاميرا</button><label class="btn btn-outline btn-sm text-xs cursor-pointer">📁 رفع<input type="file" id="input-images" accept="image/*" multiple class="hidden" onchange="handleFiles(this)"></label></div></div>
         </div>
       </div>
 
-      <div class="space-y-3">
-        <div class="card p-4"><h3 class="card-header mb-2">البيانات الأساسية</h3><div class="space-y-2">
-          <div><label class="text-[10px] text-gray-500 font-bold">المدرسة</label><input type="text" id="input-school" value="سهيل بن عمرو الثانوية" class="input-field text-sm py-1.5" oninput="syncInfo()"></div>
-          <div><label class="text-[10px] text-gray-500 font-bold">التاريخ</label><input type="text" id="input-date" class="input-field text-sm py-1.5 text-center" dir="ltr" oninput="syncInfo()"></div>
-          <div><label class="text-[10px] text-gray-500 font-bold">المجال والمكان</label><div class="flex gap-1"><input type="text" id="input-domain" value="عام" class="input-field text-sm py-1.5 text-center w-1/2" oninput="syncInfo()"><input type="text" id="input-location" value="الساحة" class="input-field text-sm py-1.5 text-center w-1/2" oninput="syncInfo()"></div></div>
+      <div class="space-y-4">
+        <div class="card"><h3 class="card-header">البيانات الأساسية</h3><div class="space-y-3">
+          <div><label class="input-label">المدرسة</label><input type="text" id="input-school" value="سهيل بن عمرو الثانوية" class="input-field font-bold" oninput="syncInfo()"></div>
+          <div><label class="input-label">التاريخ</label><input type="text" id="input-date" class="input-field text-center" dir="ltr" oninput="syncInfo()"></div>
+          <div class="flex gap-2"><div class="w-1/2"><label class="input-label">المجال</label><input type="text" id="input-domain" value="عام" class="input-field text-center" oninput="syncInfo()"></div><div class="w-1/2"><label class="input-label">المكان</label><input type="text" id="input-location" value="الساحة" class="input-field text-center" oninput="syncInfo()"></div></div>
         </div></div>
-        <div class="card p-4"><h3 class="card-header mb-2">التوقيعات والأدوات</h3>
-          <div class="flex gap-2 mb-2"><div class="w-1/2"><label class="text-[10px] text-gray-500 font-bold">المنفذ</label><input type="text" id="input-executor" value="معلم" class="input-field text-sm py-1" oninput="syncInfo()"></div><div class="w-1/2"><label class="text-[10px] text-gray-500 font-bold">المدير</label><input type="text" id="input-director" value="فيصل العلياني" class="input-field text-sm py-1" oninput="syncInfo()"></div></div>
-          <div class="mb-2"><label class="text-[10px] text-gray-500 font-bold">رابط التوثيق (QR)</label><input type="text" id="qr-link" class="input-field text-[10px] py-1" dir="ltr" value="https://moe.gov.sa" oninput="generateQR()"></div>
-          <div class="h-28 overflow-y-auto border rounded p-1" id="tools-checkboxes"></div>
+        <div class="card"><h3 class="card-header">التوقيعات والأدوات</h3>
+          <div class="flex gap-2 mb-3"><div class="w-1/2"><label class="input-label">المنفذ</label><input type="text" id="input-executor" value="معلم" class="input-field" oninput="syncInfo()"></div><div class="w-1/2"><label class="input-label">المدير</label><input type="text" id="input-director" value="فيصل العلياني" class="input-field" oninput="syncInfo()"></div></div>
+          <div class="mb-3"><label class="input-label">رابط التوثيق (QR)</label><input type="text" id="qr-link" class="input-field text-left" dir="ltr" value="https://moe.gov.sa" oninput="generateQR()"></div>
+          <div class="h-28 overflow-y-auto border border-gray-200 rounded p-2" id="tools-checkboxes"></div>
         </div>
       </div>
     </div>
@@ -300,23 +282,23 @@
 
   <!-- الكاميرا -->
   <div id="camera-app">
-    <div class="cam-header"><button onclick="switchCamera()" class="cam-btn">↻</button><button onclick="closeCamera()" class="cam-btn danger">✕</button></div>
+    <div class="cam-header"><button onclick="switchCamera()" class="cam-btn">↻</button><button onclick="closeCamera()" class="cam-btn" style="background:rgba(220,38,38,0.5)">✕</button></div>
     <div class="cam-viewfinder"><video id="cam-video" autoplay playsinline muted></video></div>
     <div class="cam-controls"><div class="shutter-row"><div class="shutter-btn" onclick="capturePhoto()"><div class="shutter-inner"></div></div></div></div>
     <canvas id="hidden-canvas" class="hidden"></canvas>
     <div id="review-screen"><div class="review-image-area"><img id="review-img" src=""></div><div class="review-actions"><button class="review-action-btn" onclick="discardPhoto()">إلغاء</button><button class="review-action-btn accept" onclick="acceptPhoto()">اعتماد</button></div></div>
   </div>
 
-  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-box"><div class="spinner"></div><p class="font-bold text-primary text-sm">جاري صياغة التقرير بذكاء للمواءمة مع الصفحة...</p></div></div>
+  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-box"><div class="spinner"></div><p class="font-bold text-primary">جاري صياغة التقرير بذكاء للمواءمة مع الصفحة...</p></div></div>
 
   <!-- ورقة التقرير A4 -->
   <div class="preview-wrapper" id="preview-wrapper">
     <div id="report-element" class="a4-page">
       <div class="report-header">
         <div class="header-content">
-          <div class="header-right"><p class="text-[10pt] font-bold leading-tight font-heading">المملكة العربية السعودية</p><p class="text-[9pt] font-bold leading-tight mt-0.5 font-heading">الإدارة العامة للتعليم بمنطقة عسير</p></div>
-          <div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[55px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div>
-          <div class="header-left"><div class="header-left-inner"><p class="text-[11pt] font-black leading-tight text-white font-heading">وزارة التعليم</p><p class="text-[9pt] font-bold leading-tight mt-0.5 text-accent font-heading" id="display-school">سهيل بن عمرو الثانوية</p></div></div>
+          <div class="header-right"><p class="text-[14px] font-bold leading-tight font-heading">المملكة العربية السعودية</p><p class="text-[12px] font-bold leading-tight mt-1 font-heading">الإدارة العامة للتعليم بمنطقة عسير</p></div>
+          <div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[75px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div>
+          <div class="header-left"><div class="header-left-inner"><p class="text-[16px] font-black leading-tight text-white font-heading">وزارة التعليم</p><p class="text-[13px] font-bold leading-tight mt-1 text-accent font-heading" id="display-school">سهيل بن عمرو الثانوية</p></div></div>
         </div>
       </div>
       <div class="title-badge-wrapper"><div class="title-badge" id="display-title">عنوان التقرير</div></div>
@@ -329,40 +311,69 @@
         </div>
       </div>
       
-      <!-- المنطقة الأساسية الممنوعة من التمرير -->
       <div class="main-content-area">
         <div id="template-teacher">
           <div class="teacher-text-col" id="teacher-content">
-            <p class="text-gray-400 text-center mt-10 text-[10px]">الرجاء إدخال وصف النشاط في لوحة التحكم والضغط على "توليد التقرير"</p>
+            <p class="text-gray-400 text-center mt-10 text-[14px]">الرجاء إدخال وصف النشاط في لوحة التحكم والضغط على "توليد التقرير"</p>
           </div>
           <div class="teacher-evidence-col">
             <div class="evidence-header-bar">شواهد التنفيذ</div>
             <div class="evidence-container" id="teacher-evidence">
-              <div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 1</span></div>
-              <div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 2</span></div>
+              <div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 1</span></div>
+              <div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>
             </div>
           </div>
         </div>
       </div>
       
-      <!-- التذييل الثابت -->
       <div class="report-footer">
-        <div class="text-center w-1/3"><p class="font-heading text-[9pt] font-bold text-primary mb-1">المنفذ</p><p id="display-footer-executor" class="font-body text-[10pt] font-medium text-gray-700">معلم</p></div>
-        <div class="text-center w-1/3 flex justify-center"><div id="qrcode" class="border p-0.5 bg-white rounded"></div></div>
-        <div class="text-center w-1/3"><p class="font-heading text-[9pt] font-bold text-primary mb-1">مدير المدرسة</p><p id="display-director" class="font-heading text-[10pt] font-bold text-secondary">فيصل العلياني</p></div>
+        <div class="text-center w-1/3"><p class="font-heading text-[13px] font-bold text-primary mb-2">المنفذ</p><p id="display-footer-executor" class="font-body text-[14px] font-medium text-gray-700">معلم</p></div>
+        <div class="text-center w-1/3 flex justify-center"><div id="qrcode" class="border p-1 bg-white rounded"></div></div>
+        <div class="text-center w-1/3"><p class="font-heading text-[13px] font-bold text-primary mb-2">مدير المدرسة</p><p id="display-director" class="font-heading text-[14px] font-bold text-secondary">فيصل العلياني</p></div>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // --- نظام المفاتيح لحل مشكلة GitHub ---
+      // --- نظام الإشعارات البديل لـ Alert ---
+      window.showToast = function(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(-20px)'; setTimeout(()=>toast.remove(), 300); }, 3000);
+      };
+
+      // --- نظام التحجيم للشاشات (Responsive Scaling) ---
+      // يقوم بتصغير الورقة بصرياً لتناسب الشاشات الصغيرة دون تغيير حجمها الحقيقي
+      function scaleA4Page() {
+        const wrapper = document.getElementById('preview-wrapper');
+        const page = document.getElementById('report-element');
+        const windowWidth = window.innerWidth;
+        const padding = 20; // المسافة الجانبية
+        
+        if (windowWidth < 820) { // 794 (A4 width) + padding
+          const scale = (windowWidth - padding) / 794;
+          page.style.transform = `scale(${scale})`;
+          // تحديث ارتفاع الحاوية ليتناسب مع التصغير
+          wrapper.style.height = `${1123 * scale}px`;
+        } else {
+          page.style.transform = 'none';
+          wrapper.style.height = 'auto';
+        }
+      }
+      window.addEventListener('resize', scaleA4Page);
+
+      // --- نظام المفاتيح لـ GitHub ---
       window.toggleSettings = function() {
         document.getElementById('settings-section').classList.toggle('hidden');
       };
       
       window.saveApiKey = function(val) {
         localStorage.setItem('gemini_api_key', val.trim());
+        if(val.trim()) showToast('تم حفظ المفتاح بنجاح', 'success');
       };
 
       function getApiKey() {
@@ -370,7 +381,6 @@
       }
       // ----------------------------------------
 
-      // تمت استعادة جميع الأدوات بناءً على طلبك
       const TOOLS_LIST = ['سبورة', 'قلم', 'لابتوب', 'جهاز كمبيوتر', 'أوراق عمل', 'عرض تقديمي', 'فيديو تعليمي', 'مسجل', 'سماعات', 'جهاز عرض', 'بروجكتر', 'سبورة تفاعلية', 'بطاقات', 'مجسمات'];
 
       const state = {
@@ -383,15 +393,15 @@
         document.getElementById('input-date').value = new Date().toLocaleDateString('ar-SA');
         const savedKey = getApiKey();
         if(savedKey) document.getElementById('api-key-input').value = savedKey;
-        syncInfo(); generateQR(); renderEvidence(); renderToolsCheckboxes();
+        syncInfo(); generateQR(); renderEvidence(); renderToolsCheckboxes(); scaleA4Page();
       });
 
       function renderToolsCheckboxes() {
         const container = document.getElementById('tools-checkboxes');
         container.innerHTML = TOOLS_LIST.map(tool => `
-          <label class="flex items-center gap-1.5 p-1 hover:bg-gray-50 cursor-pointer">
-            <input type="checkbox" value="${tool}" onchange="toggleTool('${tool}', this.checked)" class="accent-secondary w-3 h-3">
-            <span class="text-[10px] text-gray-700">${tool}</span>
+          <label class="flex items-center gap-2 p-1.5 hover:bg-gray-50 cursor-pointer rounded">
+            <input type="checkbox" value="${tool}" onchange="toggleTool('${tool}', this.checked)" class="accent-secondary w-3.5 h-3.5">
+            <span class="text-[12px] text-gray-700 font-medium">${tool}</span>
           </label>
         `).join('');
       }
@@ -403,7 +413,6 @@
       
       function updateToolsDisplay() {
         const container = document.getElementById('display-tools');
-        // تم إزالة قيد العدد، سيتم عرض جميع الأدوات المختارة
         if (container) container.innerHTML = [...state.selectedTools].map(t => `<span>${t}</span>`).join(''); 
       }
 
@@ -419,19 +428,25 @@
       window.generateQR = function() {
         const link = document.getElementById('qr-link')?.value || 'https://moe.gov.sa';
         const qr = document.getElementById('qrcode');
-        if(qr){ qr.innerHTML = ''; new QRCode(qr, { text: link, width: 50, height: 50, colorDark: '#1a365d', colorLight: '#ffffff' }); }
+        if(qr){ qr.innerHTML = ''; new QRCode(qr, { text: link, width: 60, height: 60, colorDark: '#1a365d', colorLight: '#ffffff' }); }
       };
       window.exportAsImage = function() {
-        html2canvas(document.getElementById('report-element'), { scale: 2 }).then(canvas => {
+        // الإلغاء المؤقت للتصغير لأخذ لقطة صحيحة
+        const page = document.getElementById('report-element');
+        const oldTransform = page.style.transform;
+        page.style.transform = 'none';
+        
+        html2canvas(page, { scale: 2 }).then(canvas => {
           const link = document.createElement('a'); link.download = 'تقرير.png'; link.href = canvas.toDataURL('image/png'); link.click();
+          page.style.transform = oldTransform; // إعادة التصغير
         });
       };
       
       // Camera Functions
-      window.openCamera = function() { if(state.images.length >= 2) return alert('الحد الأقصى صورتان'); document.getElementById('camera-app').style.display = 'flex'; startStream(); };
+      window.openCamera = function() { if(state.images.length >= 2) { showToast('الحد الأقصى صورتان فقط', 'error'); return; } document.getElementById('camera-app').style.display = 'flex'; startStream(); };
       window.closeCamera = function() { stopStream(); document.getElementById('camera-app').style.display = 'none'; document.getElementById('review-screen').style.display = 'none'; };
       function stopStream() { if(state.stream){ state.stream.getTracks().forEach(t=>t.stop()); state.stream=null; } document.getElementById('cam-video').srcObject=null; state.videoReady=false; }
-      async function startStream() { stopStream(); try { state.stream=await navigator.mediaDevices.getUserMedia({ video:{ facingMode:{ ideal:state.facingMode } }, audio:false }); const v=document.getElementById('cam-video'); v.srcObject=state.stream; await v.play(); state.videoReady=true; } catch(e) { alert('تعذر الوصول للكاميرا'); closeCamera(); } }
+      async function startStream() { stopStream(); try { state.stream=await navigator.mediaDevices.getUserMedia({ video:{ facingMode:{ ideal:state.facingMode } }, audio:false }); const v=document.getElementById('cam-video'); v.srcObject=state.stream; await v.play(); state.videoReady=true; } catch(e) { showToast('تعذر الوصول للكاميرا', 'error'); closeCamera(); } }
       window.switchCamera = function() { state.facingMode = state.facingMode==='environment'?'user':'environment'; startStream(); };
       window.capturePhoto = function() {
         if(!state.videoReady || state.images.length>=2) return;
@@ -446,10 +461,15 @@
 
       // AI Logic
       async function callAI(mainTitle, generalDesc, subtitles) {
-        const apiKey = getApiKey();
-        if(!apiKey) throw new Error("API_KEY_MISSING");
-
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const savedKey = getApiKey();
+        
+        // التبديل الذكي: إذا أدخل المستخدم مفتاحاً يستخدم 1.5 (العام)، وإن لم يُدخل يستخدم 2.5 (الداخلي)
+        const modelName = savedKey ? "gemini-1.5-flash" : "gemini-2.5-flash-preview-09-2025";
+        
+        // المفتاح الداخلي يتم توفيره برمجياً بواسطة البيئة الحالية إذا كان savedKey فارغاً
+        const targetApiKey = savedKey || ""; 
+        
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${targetApiKey}`;
         
         const systemPrompt = `أنت محرك صياغة لتقارير مدرسية. مساحة التقرير ضيقة جداً (صفحة A4 واحدة فقط)، لذا يجب الالتزام بالاختصار الشديد.
 يجب إرجاع الرد بصيغة JSON حصراً.
@@ -466,7 +486,10 @@
         const payload = { contents: [{ parts: [{ text: userMsg }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { responseMimeType: "application/json" } };
 
         const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        if (!response.ok) throw new Error(response.status === 400 ? "INVALID_KEY" : `HTTP Error: ${response.status}`);
+        if (!response.ok) {
+            if (response.status === 400 || response.status === 403 || response.status === 404) throw new Error("INVALID_KEY");
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
         
         const data = await response.json();
         const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -476,7 +499,7 @@
 
       window.generateAll = function() {
         const desc = document.getElementById('general-desc')?.value?.trim() || '';
-        if(!desc) return alert('الرجاء كتابة وصف النشاط للبدء');
+        if(!desc) { showToast('الرجاء كتابة وصف النشاط للبدء', 'error'); return; }
         state.generalDesc = desc;
 
         if (state.subtitles.length === 0) {
@@ -488,7 +511,7 @@
       };
 
       window.regenerateContent = function() {
-        if(!state.generalDesc) return alert('اكتب الوصف أولاً');
+        if(!state.generalDesc) { showToast('الرجاء كتابة وصف النشاط أولاً', 'error'); return; }
         processGeneration();
       };
 
@@ -499,14 +522,16 @@
           const aiData = await callAI(title, state.generalDesc, state.subtitles);
           renderAIContent(aiData);
           syncInfo(); syncTitleToReport(); generateQR();
+          showToast('تم صياغة التقرير بنجاح!', 'success');
         } catch(e) {
           console.error(e);
-          if(e.message === "API_KEY_MISSING" || e.message === "INVALID_KEY") {
-            alert("مفتاح API غير موجود أو غير صالح. الرجاء إدخال المفتاح الصحيح من الإعدادات.");
+          if(e.message === "INVALID_KEY") {
+            showToast("مفتاح API غير صحيح أو غير متوفر.", "error");
             document.getElementById('settings-section').classList.remove('hidden');
-            renderLocalError("تأكد من إدخال مفتاح Gemini API في لوحة الإعدادات.");
+            renderLocalError("تأكد من إدخال مفتاح Gemini API صالح في الإعدادات أعلى الصفحة ليعمل الموقع على الاستضافة.");
           } else {
-            renderLocalError("حدث خطأ في الاتصال بالذكاء الاصطناعي.");
+            showToast("حدث خطأ في الاتصال بالذكاء الاصطناعي.", "error");
+            renderLocalError("تأكد من اتصالك بالإنترنت وحاول مرة أخرى.");
           }
         } finally {
           hideLoading();
@@ -515,8 +540,8 @@
 
       function renderSubtitleBlocks() {
         document.getElementById('subtitle-blocks').innerHTML = state.subtitles.map((t,i)=>`
-          <div class="flex gap-1 items-center">
-            <input type="text" value="${t}" oninput="state.subtitles[${i}]=this.value.trim()" class="input-field text-[10px] py-1 flex-1">
+          <div class="flex gap-2 items-center">
+            <input type="text" value="${t}" oninput="state.subtitles[${i}]=this.value.trim()" class="input-field text-sm py-1.5 flex-1">
           </div>`).join('');
       }
 
@@ -551,17 +576,17 @@
               window.reportChartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: { labels: chartData.labels || ['نجاح','غير ذلك'], datasets: [{ data: chartData.values || [90, 10], backgroundColor: ['#18a883', '#cbd5e1'], borderWidth: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'left', labels: { font: { family: 'Tajawal', size: 8 }, boxWidth: 8 } } }, layout: { padding: 0 }, cutout: '60%' }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'left', labels: { font: { family: 'Tajawal', size: 10 }, boxWidth: 10 } } }, layout: { padding: 0 }, cutout: '60%' }
               });
             }
           }, 100);
         }
       }
 
-      function renderLocalError(msg) { document.getElementById('teacher-content').innerHTML = `<p class="text-red-500 text-center mt-10 text-xs font-bold">${msg}</p>`; }
+      function renderLocalError(msg) { document.getElementById('teacher-content').innerHTML = `<p class="text-red-500 text-center mt-10 text-sm font-bold bg-red-50 p-4 rounded-lg border border-red-200">${msg}</p>`; }
       function renderEvidence() {
         const c = document.getElementById('teacher-evidence');
-        c.innerHTML = state.images.length ? state.images.map(s=>`<div class="photo-slot"><img src="${s}" alt="شاهد"></div>`).join('') + (state.images.length===1?'<div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 2</span></div>':'') : '<div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 1</span></div><div class="photo-slot"><span class="text-gray-400 text-xs">الشاهد 2</span></div>';
+        c.innerHTML = state.images.length ? state.images.map(s=>`<div class="photo-slot"><img src="${s}" alt="شاهد"></div>`).join('') + (state.images.length===1?'<div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>':'') : '<div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 1</span></div><div class="photo-slot"><span class="text-gray-400 text-sm">الشاهد 2</span></div>';
       }
       function showLoading() { document.getElementById('loading-overlay').classList.remove('hidden'); }
       function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
