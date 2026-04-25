@@ -41,7 +41,7 @@
    .card { background: white; border-radius: 8px; border: 1px solid var(--border); padding: 16px; margin-bottom: 12px; }
    
    /* =========================================================
-      THE ARCHITECTURAL FIX FOR A4 PDF EXPORT (STRUCTURAL CSS)
+      THE ULTIMATE A4 ARCHITECTURE (SCREEN)
       ========================================================= */
    .preview-wrapper {
      width: 100%; max-width: 100vw; display: flex; justify-content: center;
@@ -49,9 +49,9 @@
    }
    
    .a4-page {
-     /* مقاس أمان أضيق من A4 الفعلي لمنع الاقتطاع تماماً (Safe Zone Width & Height) */
-     width: 200mm;
-     height: 285mm;
+     /* القياس الحقيقي لورقة A4 لملء مساحة الـ PDF تماماً */
+     width: 210mm;
+     height: 297mm;
      background: white;
      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
      position: relative;
@@ -59,36 +59,36 @@
      flex-direction: column;
      flex-shrink: 0;
      box-sizing: border-box;
-     overflow: hidden;
+     overflow: hidden; /* صارم جداً لمنع الاقتطاع */
      transform-origin: top center;
    }
 
    .report-header {
-     height: 12%; /* نسبة مئوية للحفاظ على الهيكل */
+     height: 12%;
      width: 100%; flex-shrink: 0; position: relative;
      background: linear-gradient(135deg, #1a365d 0%, #0f2440 40%, #18a883 100%);
-     border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white;
+     border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; color: white;
    }
    .header-content { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 8%; }
    .header-right, .header-left { width: 35%; }
    .header-left { text-align: left; }
    .header-left-inner { direction: rtl; text-align: right; display: inline-block; }
    .header-center { width: 30%; display: flex; justify-content: center; }
-   .title-badge-wrapper { position: relative; margin-top: -15px; z-index: 20; text-align: center; flex-shrink: 0; }
-   .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 6px 30px; border-radius: 99px; font-family: 'Cairo', sans-serif; font-size: 13pt; font-weight: 900; border: 3px solid white; max-width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+   .title-badge-wrapper { position: relative; margin-top: -16px; z-index: 20; text-align: center; flex-shrink: 0; }
+   .title-badge { display: inline-block; background: linear-gradient(135deg, #1a365d, #1e4d8c); color: white; padding: 6px 35px; border-radius: 99px; font-family: 'Cairo', sans-serif; font-size: 14pt; font-weight: 900; border: 3px solid white; max-width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
    
-   .info-bar-wrapper { padding: 0 6%; margin-top: 10px; flex-shrink: 0; }
-   .info-bar { display: flex; width: 100%; background: white; border-top: 2px solid #e2e8f0; border-bottom: 2px solid #e2e8f0; padding: 4px 0; }
+   .info-bar-wrapper { padding: 0 6%; margin-top: 10px; flex-shrink: 0; width: 100%; }
+   .info-bar { display: flex; width: 100%; background: white; border-top: 2px solid #e2e8f0; border-bottom: 2px solid #e2e8f0; padding: 5px 0; }
    .info-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #e2e8f0; padding: 0 4px; }
    .info-item:last-child { border-left: none; }
-   .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 8pt; }
-   .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 9pt; text-align: center; line-height: 1.2; }
+   .info-label { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 8.5pt; }
+   .info-value { color: var(--primary); font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 9.5pt; text-align: center; line-height: 1.2; }
    
    .main-content-area {
-     flex: 1 1 auto; /* مرونة تامة لأخذ المساحة المتبقية فقط */
-     padding: 10px 6%;
+     flex: 1 1 auto;
+     padding: 12px 6%;
      display: flex; flex-direction: column;
-     overflow: hidden; min-height: 0; /* السر هنا لمنع التمدد الخارجي */
+     overflow: hidden; min-height: 0; width: 100%;
    }
    
    .content-grid { display: flex; gap: 15px; height: 100%; width: 100%; }
@@ -99,28 +99,28 @@
    .section-heading { font-family: 'Cairo', sans-serif; font-size: 11pt; font-weight: 900; color: var(--primary); border-bottom: 1.5px solid #eab308; display: inline-block; padding-bottom: 1px; margin-bottom: 4px; }
    
    .intro-section { margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1.5px dashed var(--secondary); }
-   .intro-heading { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 10pt; display: block; margin-bottom: 2px; }
-   .intro-text { color: #1e293b; font-weight: 500; font-size: 9.5pt; line-height: 1.4; text-align: justify; }
+   .intro-heading { color: var(--secondary); font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 10.5pt; display: block; margin-bottom: 2px; }
+   .intro-text { color: #1e293b; font-weight: 500; font-size: 10pt; line-height: 1.4; text-align: justify; }
    
    .bullet-list { list-style: none; padding: 0; margin: 2px 0; }
    .bullet-item { position: relative; padding-right: 14px; margin-bottom: 2px; font-size: 9.5pt; color: #1e293b; line-height: 1.3; font-weight: 500; }
    .bullet-item::before { content: ''; position: absolute; right: 0; top: 5px; width: 5px; height: 5px; background: var(--secondary); border-radius: 50%; }
    
-   .report-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; border-radius: 4px; overflow: hidden; }
+   .report-table { width: 100%; border-collapse: collapse; font-size: 9pt; border-radius: 4px; overflow: hidden; }
    .report-table th { color: white; padding: 4px; border: 1px solid #0d9668; text-align: center; font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #18a883, #0d9668); }
    .report-table td { padding: 4px; border: 1px solid #e2e8f0; color: #1e293b; text-align: center; font-weight: 500; }
    .report-table tbody tr:nth-child(even) td { background: #f8fafc; }
-   .chart-container { height: 90px; width: 100%; position: relative; margin-top: 2px; }
+   .chart-container { height: 100px; width: 100%; position: relative; margin-top: 2px; }
 
-   .evidence-header { color: white; font-family: 'Cairo', sans-serif; font-size: 10pt; font-weight: 700; text-align: center; padding: 4px; border-radius: 8px 8px 0 0; background: linear-gradient(135deg, #18a883, #0d9668); flex-shrink: 0; }
+   .evidence-header { color: white; font-family: 'Cairo', sans-serif; font-size: 10.5pt; font-weight: 700; text-align: center; padding: 4px; border-radius: 8px 8px 0 0; background: linear-gradient(135deg, #18a883, #0d9668); flex-shrink: 0; }
    .evidence-body { flex: 1; border: 1.5px solid #18a883; border-top: none; border-radius: 0 0 8px 8px; padding: 6px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
    .photo-slot { flex: 1; width: 100%; border-radius: 6px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; border: 1.5px dashed #cbd5e1; min-height: 0; }
    .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
    
    .report-footer {
-     height: 10%; padding: 0 8%; display: flex; justify-content: space-between; align-items: center;
+     height: 10%; width: 100%; padding: 0 8%; display: flex; justify-content: space-between; align-items: center;
      border-top: 2px solid #e5e7eb; background: linear-gradient(to bottom, #ffffff, #f8fafc); flex-shrink: 0;
-     margin-top: auto; /* يدفعه للأسفل تماماً */
+     margin-top: auto; /* يجبر التذييل على الالتصاق بالقاع المطلق */
    }
    
    .tools-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; max-height: 28px; overflow: hidden; }
@@ -150,8 +150,8 @@
        margin: 0 !important; /* إزالة هوامش النظام نهائياً */
      }
      html, body {
-       width: 100vw !important;
-       height: 100vh !important;
+       width: 210mm !important;
+       height: 297mm !important;
        margin: 0 !important;
        padding: 0 !important;
        overflow: hidden !important;
@@ -160,16 +160,14 @@
      .no-print { display: none !important; }
      
      .preview-wrapper {
-       padding: 0 !important; margin: 0 !important; width: 100vw !important; height: 100vh !important;
+       padding: 0 !important; margin: 0 !important;
+       width: 210mm !important; height: 297mm !important;
        display: block !important; overflow: hidden !important; transform: none !important;
      }
      
      .a4-page {
-       /* في وضع الطباعة، نجبر الورقة على التمدد لملء الشاشة بالكامل لحل مشكلة الاقتطاع */
-       width: 100vw !important;
-       height: 100vh !important;
-       max-width: 100% !important;
-       max-height: 100% !important;
+       width: 210mm !important;
+       height: 297mm !important;
        margin: 0 !important;
        box-shadow: none !important;
        border: none !important;
@@ -177,6 +175,11 @@
        transform: none !important;
        page-break-after: avoid !important;
        page-break-inside: avoid !important;
+       /* هذا هو السحر لمنع الانزياح لليسار في الايفون بسبب الـ RTL */
+       position: absolute !important;
+       top: 0 !important;
+       right: 0 !important;
+       left: 0 !important;
      }
    }
  </style>
@@ -190,7 +193,7 @@
    <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
      <div>
        <h2 class="text-xl font-black text-primary" style="font-family:Cairo">التقارير الذكية</h2>
-       <p class="text-xs text-gray-500 mt-1">تخطيط هندسي لصفحة واحدة (مضاد للاقتطاع)</p>
+       <p class="text-xs text-gray-500 mt-1">تخطيط هندسي لصفحة واحدة A4 (بدون اقتطاع)</p>
      </div>
      <button onclick="document.getElementById('settings-section').classList.toggle('hidden')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg font-bold">
        ⚙️ إعدادات الذكاء الاصطناعي
@@ -263,7 +266,7 @@
      <div class="report-header">
        <div class="header-content">
          <div class="header-right"><p class="text-[10pt] font-bold leading-tight font-heading">المملكة العربية السعودية</p><p class="text-[9pt] font-bold leading-tight mt-1 font-heading">الإدارة العامة للتعليم بمنطقة عسير</p></div>
-         <div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[50px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div>
+         <div class="header-center"><img src="https://upload.wikimedia.org/wikipedia/ar/1/17/Saudi_Ministry_of_Education_Logo_2025.png" alt="شعار" class="h-[55px] object-contain filter brightness-0 invert" onerror="this.style.display='none'"></div>
          <div class="header-left"><div class="header-left-inner"><p class="text-[12pt] font-black leading-tight text-white font-heading">وزارة التعليم</p><p class="text-[9pt] font-bold leading-tight mt-1 text-accent font-heading" id="display-school">سهيل بن عمرو الثانوية</p></div></div>
        </div>
      </div>
@@ -310,16 +313,16 @@
        setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(-20px)'; setTimeout(()=>t.remove(),300); }, 3000);
      };
 
-     // Scale Logic ONLY for Screen (Ignored in Print)
+     // Scale Logic ONLY for Screen View (Ignored in Print)
      function scaleA4() {
        const wrap = document.getElementById('preview-wrapper');
        const page = document.getElementById('report-element');
        const w = window.innerWidth;
-       if(w < 800) {
-          // 200mm = ~755px. We calculate ratio based on viewport.
-          const scale = (w - 20) / 755;
+       if(w < 820) {
+          // 210mm is approximately 794px.
+          const scale = (w - 20) / 794;
           page.style.transform = `scale(${scale})`;
-          wrap.style.height = `${(285 * 3.78) * scale}px`; // 285mm to px
+          wrap.style.height = `${1123 * scale}px`; // 1123px is exactly 297mm height
        } else {
           page.style.transform = 'none';
           wrap.style.height = 'auto';
@@ -401,7 +404,6 @@
        const provider = localStorage.getItem('ai_provider') || 'gemini';
        let apiKey = localStorage.getItem('ai_api_key') || "";
        
-       // بيئة الاختبار لجيميني (تجاهل المفتاح إذا لم يضعه المستخدم لأنه مدمج)
        if (!apiKey && provider === 'gemini') apiKey = "";
        else if (!apiKey) { document.getElementById('settings-section').classList.remove('hidden'); return showToast('يرجى إدخال مفتاح API', 'error'); }
 
