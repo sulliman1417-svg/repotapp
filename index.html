@@ -17,6 +17,8 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
 
     <script>
         tailwind.config = {
@@ -99,6 +101,10 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: var(--shadow-xl);
             transition: all var(--transition);
+            width: 100%;
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
         }
         .control-panel:hover {
             box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
@@ -175,6 +181,12 @@
         .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
         .btn:disabled { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
 
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
         .card {
             background: white;
             border-radius: 1rem;
@@ -199,6 +211,7 @@
             width: 100%;
             display: flex;
             justify-content: center;
+            transform-origin: top center;
             margin-top: 24px;
             margin-bottom: 48px;
             position: relative;
@@ -224,6 +237,8 @@
             flex-direction: column;
             flex-shrink: 0;
             border-radius: 4px;
+            transition: none;
+            transform-origin: top center;
         }
 
         .report-header {
@@ -766,6 +781,26 @@
         .animate-in { animation: fadeInUp 0.4s ease-out both; }
         .pulse-dot { animation: pulse 2s ease-in-out infinite; }
 
+        @media (max-width: 640px) {
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-group .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .info-bar {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media print {
             body { background: white; overflow: visible; margin: 0; padding: 0; }
             .no-print, #control-panel, #camera-app, .loading-overlay { display: none !important; }
@@ -784,8 +819,7 @@
 </head>
 <body>
 
-    <div id="control-panel" class="no-print w-full max-w-4xl control-panel rounded-2xl p-5 md:p-6 mx-3 mb-6 mt-4">
-        <!-- لوحة التحكم كما هي دون تغيير -->
+    <div id="control-panel" class="no-print control-panel rounded-2xl p-5 md:p-6 mx-3 mb-6 mt-4">
         <div class="flex justify-between items-center mb-5 pb-4 border-b border-gray-200">
             <div>
                 <h2 class="text-xl md:text-2xl font-black text-primary" style="font-family:Cairo">منصة التقارير الذكية</h2>
@@ -801,10 +835,13 @@
                 <div class="card">
                     <div><label class="input-label">العنوان الرئيسي</label><input type="text" id="input-title" class="input-field font-bold" placeholder="مثال: تفعيل اليوم الوطني 94" oninput="syncTitleToReport()"></div>
                     <div class="mt-4"><label class="input-label">وصف النشاط <span class="text-gray-400 font-normal">(لتحليل الذكاء الاصطناعي)</span></label><textarea id="general-desc" rows="5" class="input-field resize-none" placeholder="مثال: قمنا بتفعيل اليوم الوطني عبر إذاعة مدرسية تضمنت فقرات وطنية ومسابقات ثقافية..."></textarea></div>
-                    <div class="flex flex-wrap gap-3 mt-4">
-                        <button onclick="generateAll()" id="btn-generate" class="btn btn-primary flex-1"><span id="btn-text">توليد التقرير بالذكاء الاصطناعي</span><span id="btn-spinner" class="hidden" style="width:18px;height:18px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;"></span></button>
-                        <button onclick="window.print()" class="btn btn-dark">تصدير PDF</button>
-                        <button onclick="exportAsImage()" class="btn btn-outline">تصدير صورة</button>
+                    <div class="btn-group mt-4">
+                        <button onclick="generateAll()" id="btn-generate" class="btn btn-primary" style="flex:2; min-width:200px;">
+                            <span id="btn-text">توليد التقرير بالذكاء الاصطناعي</span>
+                            <span id="btn-spinner" class="hidden" style="width:18px;height:18px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;"></span>
+                        </button>
+                        <button onclick="window.print()" class="btn btn-dark" style="flex:1; min-width:120px;">تصدير PDF</button>
+                        <button onclick="exportAsHighQualityImage()" class="btn btn-outline" style="flex:1; min-width:120px;">تصدير صورة</button>
                     </div>
                 </div>
 
@@ -870,7 +907,6 @@
     </div>
 
     <div id="camera-app">
-        <!-- واجهة الكاميرا كما هي -->
         <div class="cam-header"><button onclick="switchCamera()" class="cam-btn">↻</button><button onclick="closeCamera()" class="cam-btn danger">✕</button></div>
         <div class="cam-viewfinder"><video id="cam-video" autoplay playsinline muted></video><div id="camera-flash"></div></div>
         <div class="cam-controls">
@@ -902,9 +938,7 @@
                 </div>
             </div>
 
-            <div class="title-badge-wrapper">
-                <div class="title-badge" id="display-title">عنوان التقرير</div>
-            </div>
+            <div class="title-badge-wrapper"><div class="title-badge" id="display-title">عنوان التقرير</div></div>
 
             <div class="info-bar-wrapper">
                 <div class="info-bar">
@@ -935,6 +969,7 @@
     </div>
 
     <script>
+        // ==================== الإعدادات ====================
         const OPENROUTER_API_KEY = "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";
         const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
         const AI_MODEL = "google/gemini-2.0-flash-001";
@@ -965,6 +1000,7 @@
 
         let draggedIndex = null;
 
+        // ==================== التهيئة الأولية ====================
         window.addEventListener('load', () => {
             document.getElementById('input-date').value = new Date().toLocaleDateString('ar-SA');
             syncInfo();
@@ -972,10 +1008,27 @@
             renderEvidence();
             renderToolsCheckboxes();
             syncStudentCount();
+            scalePreview();
+            window.addEventListener('resize', scalePreview);
         });
 
-        // لا حاجة لتحجيم المعاينة ديناميكياً، نحافظ على الحجم الثابت
-        // ---------- أدوات Checkboxes ----------
+        function scalePreview() {
+            const wrapper = document.getElementById('preview-wrapper');
+            const page = document.getElementById('report-element');
+            if (!wrapper || !page) return;
+            const pageWidth = 794;
+            const containerWidth = wrapper.clientWidth;
+            if (containerWidth < pageWidth) {
+                const scale = containerWidth / pageWidth;
+                page.style.transform = `scale(${scale})`;
+                wrapper.style.marginTop = '0px';
+            } else {
+                page.style.transform = 'scale(1)';
+                wrapper.style.marginTop = '24px';
+            }
+        }
+
+        // ==================== الأدوات Checkboxes ====================
         function renderToolsCheckboxes() {
             const container = document.getElementById('tools-checkboxes');
             if (!container) return;
@@ -1030,7 +1083,7 @@
             });
         }
 
-        // ---------- مزامنة التقرير ----------
+        // ==================== مزامنة التقرير ====================
         function syncInfo() {
             document.getElementById('display-school').innerText = document.getElementById('input-school')?.value || '...';
             document.getElementById('display-director').innerText = document.getElementById('input-director')?.value || '...';
@@ -1073,36 +1126,38 @@
             }
         }
 
-        // ---------- تصدير صورة بأعلى جودة ----------
-        async function exportAsImage() {
+        // ==================== تصدير صورة بجودة عالية ====================
+        async function exportAsHighQualityImage() {
             const reportElement = document.getElementById('report-element');
             if (!reportElement) return;
-            // إزالة أي تحجيم مؤقت لضمان وضوح الصورة
             const originalTransform = reportElement.style.transform;
+            const originalTransition = reportElement.style.transition;
             reportElement.style.transform = 'scale(1)';
             reportElement.style.transition = 'none';
 
             try {
                 const canvas = await html2canvas(reportElement, {
-                    scale: 5, // دقة عالية جداً
+                    scale: 4,
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: '#ffffff',
-                    logging: false
+                    logging: false,
+                    width: reportElement.offsetWidth,
+                    height: reportElement.offsetHeight
                 });
                 const link = document.createElement('a');
-                link.download = 'تقرير.png';
-                link.href = canvas.toDataURL('image/png');
+                link.download = 'تقرير_عالي_الجودة.png';
+                link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
             } catch (err) {
                 alert('تعذر تصدير الصورة: ' + err.message);
             } finally {
                 reportElement.style.transform = originalTransform;
-                reportElement.style.transition = '';
+                reportElement.style.transition = originalTransition;
             }
         }
 
-        // ---------- الكاميرا ----------
+        // ==================== الكاميرا ====================
         function openCamera() {
             if (state.images.length >= 2) return alert('الحد الأقصى صورتان');
             document.body.style.overflow = 'hidden';
@@ -1207,7 +1262,7 @@
                 : '0/2';
         }
 
-        // ---------- ذكاء اصطناعي ----------
+        // ==================== الذكاء الاصطناعي ====================
         function showLoading() { document.getElementById('loading-overlay').classList.remove('hidden'); }
         function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
 
@@ -1291,7 +1346,10 @@
                 })
             });
 
-            if (!response.ok) throw new Error(`خطأ ${response.status}`);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`خطأ ${response.status}: ${errorText.substring(0, 100)}`);
+            }
             const data = await response.json();
             const contentText = data.choices?.[0]?.message?.content || '';
             let jsonStr = contentText.trim().replace(/```json\s*/g, '').replace(/```\s*/g, '');
@@ -1328,14 +1386,16 @@
                 syncInfo();
                 syncTitleToReport();
                 generateQR();
+                scalePreview();
             } catch (err) {
-                console.error(err);
-                alert('خطأ: ' + err.message + '\nسيتم استخدام المحتوى المحلي.');
+                console.error('AI Error:', err);
+                alert('تعذر الاتصال بالذكاء الاصطناعي: ' + err.message + '\nسيتم استخدام المحتوى المحلي.');
                 renderLocalContent(analysis);
                 renderEvidence();
                 syncInfo();
                 syncTitleToReport();
                 generateQR();
+                scalePreview();
             } finally {
                 hideLoading();
                 setButtonLoading('btn-generate', 'btn-text', 'btn-spinner', false);
@@ -1355,8 +1415,10 @@
                 state.aiGeneratedContent = aiResponse;
                 renderAIContent(aiResponse);
                 renderEvidence();
+                scalePreview();
             } catch (err) {
-                alert('خطأ: ' + err.message);
+                console.error('AI Error:', err);
+                alert('تعذر الاتصال بالذكاء الاصطناعي: ' + err.message);
             } finally {
                 hideLoading();
                 setButtonLoading('btn-regenerate', 'btn-regen-text', 'btn-regen-spinner', false);
@@ -1515,6 +1577,7 @@
             return state.subtitles.filter(t => t.trim()).slice(0, 4);
         }
 
+        // ==================== تصدير النطاق العام ====================
         window.generateAll = generateAll;
         window.regenerateContent = regenerateContent;
         window.addSubtitle = addSubtitle;
@@ -1523,7 +1586,7 @@
         window.updateDescription = updateDescription;
         window.addCustomTool = addCustomTool;
         window.setExecutor = setExecutor;
-        window.exportAsImage = exportAsImage;
+        window.exportAsHighQualityImage = exportAsHighQualityImage;
     </script>
 </body>
 </html>
