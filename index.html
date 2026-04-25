@@ -199,7 +199,6 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            transform-origin: top center;
             margin-top: 24px;
             margin-bottom: 48px;
             position: relative;
@@ -225,8 +224,6 @@
             flex-direction: column;
             flex-shrink: 0;
             border-radius: 4px;
-            transition: none;
-            transform-origin: top center;
         }
 
         .report-header {
@@ -271,12 +268,15 @@
             position: relative;
             margin-top: -7mm;
             z-index: 20;
-            text-align: center;
+            display: flex;
+            justify-content: center;
             padding: 0 15mm;
             flex-shrink: 0;
         }
         .title-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(135deg, #1a365d, #1e4d8c);
             color: white;
             padding: 10px 45px;
@@ -290,6 +290,7 @@
             max-width: 90%;
             border: 3px solid white;
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            min-width: 0;
         }
 
         .info-bar-wrapper {
@@ -769,13 +770,22 @@
             body { background: white; overflow: visible; margin: 0; padding: 0; }
             .no-print, #control-panel, #camera-app, .loading-overlay { display: none !important; }
             .preview-wrapper { transform: none !important; margin: 0 !important; padding: 0 !important; }
-            .a4-page { box-shadow: none !important; margin: 0 !important; page-break-after: avoid; border-radius: 0; width:210mm; height:297mm; }
+            .a4-page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                page-break-after: avoid;
+                border-radius: 0;
+                width: 210mm;
+                height: 297mm;
+                transform: none !important;
+            }
         }
     </style>
 </head>
 <body>
 
     <div id="control-panel" class="no-print w-full max-w-4xl control-panel rounded-2xl p-5 md:p-6 mx-3 mb-6 mt-4">
+        <!-- لوحة التحكم كما هي دون تغيير -->
         <div class="flex justify-between items-center mb-5 pb-4 border-b border-gray-200">
             <div>
                 <h2 class="text-xl md:text-2xl font-black text-primary" style="font-family:Cairo">منصة التقارير الذكية</h2>
@@ -860,6 +870,7 @@
     </div>
 
     <div id="camera-app">
+        <!-- واجهة الكاميرا كما هي -->
         <div class="cam-header"><button onclick="switchCamera()" class="cam-btn">↻</button><button onclick="closeCamera()" class="cam-btn danger">✕</button></div>
         <div class="cam-viewfinder"><video id="cam-video" autoplay playsinline muted></video><div id="camera-flash"></div></div>
         <div class="cam-controls">
@@ -891,7 +902,9 @@
                 </div>
             </div>
 
-            <div class="title-badge-wrapper"><div class="title-badge" id="display-title">عنوان التقرير</div></div>
+            <div class="title-badge-wrapper">
+                <div class="title-badge" id="display-title">عنوان التقرير</div>
+            </div>
 
             <div class="info-bar-wrapper">
                 <div class="info-bar">
@@ -959,28 +972,9 @@
             renderEvidence();
             renderToolsCheckboxes();
             syncStudentCount();
-            scalePreview();
-            window.addEventListener('resize', scalePreview);
         });
 
-        function scalePreview() {
-            const wrapper = document.getElementById('preview-wrapper');
-            const page = document.getElementById('report-element');
-            if (!wrapper || !page) return;
-
-            const pageWidth = 794; // 210mm in px approximately (210 * 96 / 25.4)
-            const containerWidth = wrapper.clientWidth;
-
-            if (containerWidth < pageWidth) {
-                const scale = containerWidth / pageWidth;
-                page.style.transform = `scale(${scale})`;
-                wrapper.style.marginTop = `0px`;
-            } else {
-                page.style.transform = 'scale(1)';
-                wrapper.style.marginTop = '24px';
-            }
-        }
-
+        // لا حاجة لتحجيم المعاينة ديناميكياً، نحافظ على الحجم الثابت
         // ---------- أدوات Checkboxes ----------
         function renderToolsCheckboxes() {
             const container = document.getElementById('tools-checkboxes');
@@ -1079,16 +1073,22 @@
             }
         }
 
-        // ---------- تصدير صورة ----------
+        // ---------- تصدير صورة بأعلى جودة ----------
         async function exportAsImage() {
             const reportElement = document.getElementById('report-element');
             if (!reportElement) return;
+            // إزالة أي تحجيم مؤقت لضمان وضوح الصورة
+            const originalTransform = reportElement.style.transform;
+            reportElement.style.transform = 'scale(1)';
+            reportElement.style.transition = 'none';
+
             try {
                 const canvas = await html2canvas(reportElement, {
-                    scale: 3,
+                    scale: 5, // دقة عالية جداً
                     useCORS: true,
                     allowTaint: true,
-                    backgroundColor: '#ffffff'
+                    backgroundColor: '#ffffff',
+                    logging: false
                 });
                 const link = document.createElement('a');
                 link.download = 'تقرير.png';
@@ -1096,6 +1096,9 @@
                 link.click();
             } catch (err) {
                 alert('تعذر تصدير الصورة: ' + err.message);
+            } finally {
+                reportElement.style.transform = originalTransform;
+                reportElement.style.transition = '';
             }
         }
 
@@ -1325,7 +1328,6 @@
                 syncInfo();
                 syncTitleToReport();
                 generateQR();
-                scalePreview();
             } catch (err) {
                 console.error(err);
                 alert('خطأ: ' + err.message + '\nسيتم استخدام المحتوى المحلي.');
@@ -1334,7 +1336,6 @@
                 syncInfo();
                 syncTitleToReport();
                 generateQR();
-                scalePreview();
             } finally {
                 hideLoading();
                 setButtonLoading('btn-generate', 'btn-text', 'btn-spinner', false);
@@ -1354,7 +1355,6 @@
                 state.aiGeneratedContent = aiResponse;
                 renderAIContent(aiResponse);
                 renderEvidence();
-                scalePreview();
             } catch (err) {
                 alert('خطأ: ' + err.message);
             } finally {
